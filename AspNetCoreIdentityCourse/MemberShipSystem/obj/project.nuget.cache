@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "yMdeDVRfykyQ8I4vFmg/N3Ze++D7c4GoP5J0a/CEYtFLL1qSm2Q5uA55EF1jfvwGNqBBislA2xP5hbY8PgAhOA==",
+  "dgSpecHash": "s+aKLypuQiLos2L4h0NZct+VQmCrFqIxJytLGwYjYqmEc8vD9zAHINiu0BbJDHOv6uAIndoz/ftFkmAE08pJGQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\CihatSolak\\source\\repos\\cihatsolak\\NetCoreIdentity\\AspNetCoreIdentityCourse\\MemberShipSystem\\MemberShipSystem.csproj",
+  "projectFilePath": "C:\\Users\\CihatSolak\\source\\repos\\cihatsolak\\NetCoreIdentity\\AspNetCoreIdentityCourse\\MemberShipSystem\\MemberShip.Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\CihatSolak\\.nuget\\packages\\microsoft.aspnetcore.authentication.facebook\\3.1.8\\microsoft.aspnetcore.authentication.facebook.3.1.8.nupkg.sha512",
     "C:\\Users\\CihatSolak\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\3.1.8\\microsoft.aspnetcore.authentication.google.3.1.8.nupkg.sha512",

@@ -8829,9 +8829,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\CihatSolak\\source\\repos\\cihatsolak\\NetCoreIdentity\\AspNetCoreIdentityCourse\\MemberShipSystem\\MemberShipSystem.csproj",
-      "projectName": "MemberShipSystem",
-      "projectPath": "C:\\Users\\CihatSolak\\source\\repos\\cihatsolak\\NetCoreIdentity\\AspNetCoreIdentityCourse\\MemberShipSystem\\MemberShipSystem.csproj",
+      "projectUniqueName": "C:\\Users\\CihatSolak\\source\\repos\\cihatsolak\\NetCoreIdentity\\AspNetCoreIdentityCourse\\MemberShipSystem\\MemberShip.Web.csproj",
+      "projectName": "MemberShip.Web",
+      "projectPath": "C:\\Users\\CihatSolak\\source\\repos\\cihatsolak\\NetCoreIdentity\\AspNetCoreIdentityCourse\\MemberShipSystem\\MemberShip.Web.csproj",
       "packagesPath": "C:\\Users\\CihatSolak\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\CihatSolak\\source\\repos\\cihatsolak\\NetCoreIdentity\\AspNetCoreIdentityCourse\\MemberShipSystem\\obj\\",
       "projectStyle": "PackageReference",

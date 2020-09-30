@@ -21,6 +21,8 @@ namespace MemberShipSystem
             app.UseRouting();
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
