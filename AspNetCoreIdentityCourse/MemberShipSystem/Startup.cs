@@ -1,3 +1,4 @@
+using MemberShip.Web.IdentityCustomValidators;
 using MemberShip.Web.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,11 +23,20 @@ namespace MemberShipSystem
         {
             services.AddDbContext<AppIdentityDbContext>(options =>
             {
-                 options.UseSqlServer(Configuration.GetConnectionString("Default"));
+                options.UseSqlServer(Configuration.GetConnectionString("Default"));
             });
 
-            services.AddIdentity<AppUser, IdentityRole>()
-                    .AddEntityFrameworkStores<AppIdentityDbContext>();
+            services.AddIdentity<AppUser, AppRole>(options =>
+            {
+                options.Password.RequiredLength = 4; //Þifre uzunluðu minimum 4 karakter olmalý.
+                options.Password.RequireNonAlphanumeric = false; // ?,* gibi karakterlerin girilmesi zorunlu degil.
+                options.Password.RequireDigit = false; //Rakam kullanýlmasý zorunlu degil.
+                options.Password.RequireLowercase = false; //Küçük karakter girilmesi zorunlu degil.
+                options.Password.RequireUppercase = false; //Büyük karakter girilmesi zorunlu degil.
+
+            })
+            .AddPasswordValidator<CustomPasswordValidator>()
+            .AddEntityFrameworkStores<AppIdentityDbContext>();
 
             services.AddMvc().AddRazorRuntimeCompilation();
         }
