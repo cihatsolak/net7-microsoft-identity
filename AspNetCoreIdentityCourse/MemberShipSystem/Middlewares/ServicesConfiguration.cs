@@ -22,11 +22,11 @@ namespace MemberShip.Web.Middlewares
             {
                 options.Cookie = cookieConfig;
 
-                options.ExpireTimeSpan = TimeSpan.FromHours(1);
                 options.LoginPath = new PathString("/Account/SignIn");
                 options.AccessDeniedPath = new PathString("/AccessDenied");
                 //options.LogoutPath = new PathString("Account/SignOut");
                 options.SlidingExpiration = true; // Kullanıcı cookie ömrünün yarısını geçtikten sonra default olarak verilen değer kadar cookie süresi uzar.
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
             });
         }
 

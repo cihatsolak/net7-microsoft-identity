@@ -20,8 +20,10 @@ namespace MemberShip.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult SignIn()
+        public IActionResult SignIn(string returnUrl)
         {
+            TempData["ReturnUrl"] = returnUrl;
+
             return View();
         }
 
@@ -48,6 +50,9 @@ namespace MemberShip.Web.Controllers
                 ModelState.AddModelError(string.Empty, "Giriş başarısız.");
                 return View(loginViewModel);
             }
+
+            if (TempData["ReturnUrl"] != null)
+                return Redirect(TempData["ReturnUrl"] as string);
 
             return RedirectToAction("Index", "Home");
         }

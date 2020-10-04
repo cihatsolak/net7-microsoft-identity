@@ -14,6 +14,7 @@ namespace MemberShip.Web.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [DisplayName("Beni Hatırla")]
         public bool RememberMe { get; set; }
     }
 }

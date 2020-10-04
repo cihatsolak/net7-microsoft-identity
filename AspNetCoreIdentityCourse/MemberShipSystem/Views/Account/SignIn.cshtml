@@ -1,4 +1,4 @@
-﻿@model MemberShip.Web.ViewModels.LoginViewModel
+﻿@model LoginViewModel
 
 @{
     ViewData["Title"] = "SignIn";
@@ -19,6 +19,11 @@
                 <label asp-for="Password" class="control-label"></label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="RememberMe" /> @Html.DisplayNameFor(model => model.RememberMe)
+                </label>
             </div>
             <div class="form-group">
                 <input type="submit" value="Sign In" class="btn btn-primary" />

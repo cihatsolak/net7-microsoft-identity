@@ -1,15 +1,7 @@
-using MemberShip.Web.IdentityCustomValidators;
 using MemberShip.Web.Middlewares;
-using MemberShip.Web.Models;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using System;
 
 namespace MemberShipSystem
 {
@@ -26,9 +18,9 @@ namespace MemberShipSystem
         {
             services.ConfigureDbContext(Configuration);
 
-            services.ConfigureApplicationCookie();
-
             services.ConfigureIdentity();
+
+            services.ConfigureApplicationCookie();            
 
             services.AddMvc().AddRazorRuntimeCompilation();
         }
