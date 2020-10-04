@@ -40,12 +40,13 @@ namespace MemberShipSystem
             app.UseStatusCodePages();
             app.UseRouting();
             app.UseStaticFiles();
-
+            
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Account}/{action=SignIn}/{id?}");
             });
         }
     }

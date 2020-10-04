@@ -15,7 +15,6 @@ namespace MemberShip.Web.Middlewares
             CookieBuilder cookieConfig = new CookieBuilder();
             cookieConfig.Name = "MyBlog";
             cookieConfig.HttpOnly = false;
-            cookieConfig.Expiration = TimeSpan.FromHours(1);
             cookieConfig.SameSite = SameSiteMode.Strict; //Sadece bana istek yapan sayfadan cookie al.
             cookieConfig.SecurePolicy = CookieSecurePolicy.SameAsRequest; //İstek http'den yapılmışsa http, https den yapılmışssa https'den cookie al.
 
@@ -23,8 +22,10 @@ namespace MemberShip.Web.Middlewares
             {
                 options.Cookie = cookieConfig;
 
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
                 options.LoginPath = new PathString("/Account/SignIn");
-                options.LogoutPath = new PathString("Account/SignOut");
+                options.AccessDeniedPath = new PathString("/AccessDenied");
+                //options.LogoutPath = new PathString("Account/SignOut");
                 options.SlidingExpiration = true; // Kullanıcı cookie ömrünün yarısını geçtikten sonra default olarak verilen değer kadar cookie süresi uzar.
             });
         }

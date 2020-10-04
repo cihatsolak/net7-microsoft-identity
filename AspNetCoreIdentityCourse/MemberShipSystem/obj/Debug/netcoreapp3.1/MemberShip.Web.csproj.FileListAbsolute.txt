@@ -423,6 +423,6 @@ C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCo
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\MemberShip.Web.dll
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\MemberShip.Web.pdb
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\MemberShip.Web.genruntimeconfig.cache
-C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\SignUp.cshtml.g.cs
-C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\MemberShip.Web.csprojAssemblyReference.cache
-C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\SignIn.cshtml.g.cs
+C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Account\SignIn.cshtml.g.cs
+C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Account\SignUp.cshtml.g.cs
+C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Account\AccessDenied.cshtml.g.cs
