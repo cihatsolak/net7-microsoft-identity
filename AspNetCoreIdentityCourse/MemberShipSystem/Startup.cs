@@ -28,6 +28,9 @@ namespace MemberShipSystem
 
             services.AddIdentity<AppUser, AppRole>(options =>
             {
+                options.User.RequireUniqueEmail = true; // Email adresi unique olsun.
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnoöpqrsþtuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._"; //Kullanýcý adý bu karakterleri içerebilir.
+
                 options.Password.RequiredLength = 4; //Þifre uzunluðu minimum 4 karakter olmalý.
                 options.Password.RequireNonAlphanumeric = false; // ?,* gibi karakterlerin girilmesi zorunlu degil.
                 options.Password.RequireDigit = false; //Rakam kullanýlmasý zorunlu degil.
@@ -35,6 +38,7 @@ namespace MemberShipSystem
                 options.Password.RequireUppercase = false; //Büyük karakter girilmesi zorunlu degil.
 
             })
+            .AddUserValidator<CustomUserValidator>()
             .AddPasswordValidator<CustomPasswordValidator>()
             .AddEntityFrameworkStores<AppIdentityDbContext>();
 
