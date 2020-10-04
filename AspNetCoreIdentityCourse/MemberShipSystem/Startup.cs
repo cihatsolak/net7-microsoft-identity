@@ -38,8 +38,9 @@ namespace MemberShipSystem
                 options.Password.RequireUppercase = false; //Büyük karakter girilmesi zorunlu degil.
 
             })
-            .AddUserValidator<CustomUserValidator>()
-            .AddPasswordValidator<CustomPasswordValidator>()
+            .AddUserValidator<CustomUserValidator>() //Kendi AppUser Doðrulamamýzý yapmak
+            .AddPasswordValidator<CustomPasswordValidator>() //Kendi Þifre Doðrulamamýzý yapmak
+            .AddErrorDescriber<CustomIdentityErrorDescriber>() //Hata mesajlarýnýn türkçeleþtirilmesi
             .AddEntityFrameworkStores<AppIdentityDbContext>();
 
             services.AddMvc().AddRazorRuntimeCompilation();
