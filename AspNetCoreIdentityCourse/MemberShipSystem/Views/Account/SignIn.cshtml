@@ -1,4 +1,4 @@
-﻿@model LoginViewModel
+﻿@model SignInViewModel
 
 @{
     ViewData["Title"] = "SignIn";
@@ -29,10 +29,6 @@
                 <input type="submit" value="Sign In" class="btn btn-primary" />
             </div>
         </form>
+        <a class="btn btn-link" asp-action="ForgotPassword">Forgot Password</a>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to Home</a>
-</div>
-

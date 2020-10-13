@@ -1,6 +1,7 @@
 ﻿using MemberShip.Web.IdentityCustomValidators;
 using MemberShip.Web.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,7 +48,15 @@ namespace MemberShip.Web.Middlewares
             .AddUserValidator<CustomUserValidator>() //Kendi AppUser Doğrulamamızı yapmak
             .AddPasswordValidator<CustomPasswordValidator>() //Kendi Şifre Doğrulamamızı yapmak
             .AddErrorDescriber<CustomIdentityErrorDescriber>() //Hata mesajlarının türkçeleştirilmesi
-            .AddEntityFrameworkStores<AppIdentityDbContext>();
+            .AddEntityFrameworkStores<AppIdentityDbContext>()
+            .AddDefaultTokenProviders(); //Şifre sıfırlamada token üretmesi içiin
+
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                options.ValidationInterval = TimeSpan.FromMinutes(20); 
+                //Cookie'de yer alan securitystamp değeriyle veritabanını karşılaştırır uyuşmazlık durumunda oturumu sonlandırır.
+                //Default olarak 30 dakikadır ama ben burda 20 dakikaya çektim.
+            });
         }
 
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
