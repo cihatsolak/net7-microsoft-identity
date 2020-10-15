@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "9KTWfKf2As+d5osZzsWrP6Vut/6bTZyMct0tkOla+7d7DZWkhjayc7U191wsiJmrHgUjSEnVI1pDlV5rD3VGxA==",
+  "dgSpecHash": "r27RNLuZ7/TMFLHa9RogZl++2lUewt8AIJwoWIlqQn6xEqKedBU0DsNAFWyjP9FgV1FQNZOySHDdoF56DL+yfg==",
   "success": true,
   "projectFilePath": "C:\\Users\\CihatSolak\\source\\repos\\cihatsolak\\NetCoreIdentity\\AspNetCoreIdentityCourse\\MemberShipSystem\\MemberShip.Web.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\CihatSolak\\.nuget\\packages\\mapster\\6.5.0\\mapster.6.5.0.nupkg.sha512",
     "C:\\Users\\CihatSolak\\.nuget\\packages\\microsoft.aspnetcore.authentication.facebook\\3.1.8\\microsoft.aspnetcore.authentication.facebook.3.1.8.nupkg.sha512",
     "C:\\Users\\CihatSolak\\.nuget\\packages\\microsoft.aspnetcore.authentication.google\\3.1.8\\microsoft.aspnetcore.authentication.google.3.1.8.nupkg.sha512",
     "C:\\Users\\CihatSolak\\.nuget\\packages\\microsoft.aspnetcore.authentication.microsoftaccount\\3.1.8\\microsoft.aspnetcore.authentication.microsoftaccount.3.1.8.nupkg.sha512",
