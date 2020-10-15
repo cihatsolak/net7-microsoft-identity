@@ -27,5 +27,11 @@ namespace MemberShip.Web.Controllers
 
             return View(userViewModel);
         }
+
+        [HttpGet]
+        public IActionResult PasswordChange()
+        {
+            return View();
+        }
     }
 }
