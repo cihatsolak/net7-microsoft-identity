@@ -407,7 +407,6 @@ C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCo
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\MemberShip.Web.RazorCoreGenerate.cache
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Index.cshtml.g.cs
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
-C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_AdminLayout.cshtml.g.cs
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs
@@ -420,7 +419,6 @@ C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCo
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\MemberShip.Web.dll
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\MemberShip.Web.pdb
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\MemberShip.Web.genruntimeconfig.cache
-C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Member\_MemberLayout.cshtml.g.cs
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Member\Index.cshtml.g.cs
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\bin\Debug\netcoreapp3.1\Mapster.dll
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\MemberShip.Web.csproj.CoreCompileInputs.cache
@@ -432,3 +430,5 @@ C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCo
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Security\ResetPasswordConfirm.cshtml.g.cs
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Security\SignIn.cshtml.g.cs
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Security\SignUp.cshtml.g.cs
+C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\MemberShip.Web.csprojAssemblyReference.cache
+C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_MemberLayout.cshtml.g.cs

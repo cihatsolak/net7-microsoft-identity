@@ -24,6 +24,9 @@ namespace MemberShip.Web.Controllers
         [HttpGet]
         public IActionResult SignIn(string returnUrl)
         {
+            if (User.Identity.IsAuthenticated) //Kullanıcı hali hazırda giriş yapmışsa
+                return RedirectToAction("Index", "Member");
+
             TempData["ReturnUrl"] = returnUrl;
 
             return View();
@@ -77,12 +80,15 @@ namespace MemberShip.Web.Controllers
             if (TempData["ReturnUrl"] != null)
                 return Redirect(TempData["ReturnUrl"] as string);
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Member");
         }
 
         [HttpGet]
         public IActionResult SignUp()
         {
+            if (User.Identity.IsAuthenticated) //Kullanıcı hali hazırda giriş yapmışsa
+                return RedirectToAction("Index", "Member");
+
             return View();
         }
 

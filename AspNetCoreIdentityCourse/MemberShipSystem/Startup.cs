@@ -1,4 +1,4 @@
-using MemberShip.Web.Middlewares;
+using MemberShip.Web.Containers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

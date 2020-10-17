@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace MemberShip.Web.Middlewares
+namespace MemberShip.Web.Containers
 {
     public static class ServicesConfiguration
     {
