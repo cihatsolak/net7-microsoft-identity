@@ -16,7 +16,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <img src="https://bit.ly/3l4lBFp" width="70" height="40" alt="" loading="lazy">
@@ -27,10 +27,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link" asp-action="Index" asp-controller="Member">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-action="Index" asp-controller="Admin">Admin Index <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" asp-action="Index" asp-controller="Admin">Admin Anasayfa <span class="sr-only">(current)</span></a>
                     </li>
                 </ul>
             </div>
@@ -42,16 +39,16 @@
             <div class="col-md-8">
                 @RenderBody()
             </div>
-            <div class="col-md-4 mt-5">
+            <div class="col-md-4">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <a asp-action="PasswordChange" asp-controller="Member">Change Password</a>
+                        <a asp-action="Members" asp-controller="Admin">Members</a>
                     </li>
                     <li class="list-group-item">
-                        <a asp-action="Edit" asp-controller="Member">Edit User</a>
+                        <a asp-action="Roles" asp-controller="Admin">Roles</a>
                     </li>
                     <li class="list-group-item">
-                        <a asp-action="SignOut" asp-controller="Member" asp-route-returnUrl="/Security/SignIn">Sign Out</a>
+                        <a asp-action="SignOut" asp-controller="Admin" asp-route-returnUrl="/Security/SignIn">Sign Out</a>
                     </li>
                 </ul>
             </div>

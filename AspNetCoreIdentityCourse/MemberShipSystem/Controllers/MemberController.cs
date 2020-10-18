@@ -15,12 +15,8 @@ namespace MemberShip.Web.Controllers
 {
     public class MemberController : BaseController
     {
-
-        private readonly SignInManager<AppUser> _signInManager;
-
-        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager)
+        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager, signInManager)
         {
-            _signInManager = signInManager;
         }
 
         [HttpGet]

@@ -1,0 +1,38 @@
+﻿@model List<UserViewModel>
+@{
+    ViewData["Title"] = "Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@if (0 >= Model.Count)
+{
+    <div class="alert alert-warning" role="alert">
+        Users Not Found!
+    </div>
+}
+else
+{
+    <h4>Members</h4>
+    <hr />
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th scope="col">User Id</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.CityName</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

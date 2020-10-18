@@ -12,11 +12,8 @@ namespace MemberShip.Web.Controllers
     [AllowAnonymous]
     public class SecurityController : BaseController
     {
-        private readonly SignInManager<AppUser> _signInManager;
-
-        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager)
+        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager, signInManager)
         {
-            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -192,6 +189,12 @@ namespace MemberShip.Web.Controllers
             await _userManager.UpdateSecurityStampAsync(user);
 
             return RedirectToAction(nameof(SignIn));
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

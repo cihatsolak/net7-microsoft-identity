@@ -1,0 +1,41 @@
+﻿@model List<RoleViewModel> 
+@{
+    ViewData["Title"] = "Roles";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<a class="btn btn-success my-3" asp-action="RoleCreate">Role Oluştur</a>
+
+@if (0 >= Model.Count)
+{
+    <div class="alert alert-warning" role="alert">
+        Roles Not Found!
+    </div>
+}
+else
+{
+    <h4>Roles</h4>
+    <hr />
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Role Name</th>
+                <th scope="col">Role Process</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in Model)
+            {
+                <tr>
+                    <td>@role.Name</td>
+                    <td>
+                        <form asp-action="RoleDelete" asp-route-roleId="@role.Id" method="post">
+                            <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                        </form>
+                        <a class="btn btn-info btn-sm" asp-action="RoleEdit" asp-route-roleId="@role.Id">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
