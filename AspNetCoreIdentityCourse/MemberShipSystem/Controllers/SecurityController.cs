@@ -12,12 +12,10 @@ namespace MemberShip.Web.Controllers
     [AllowAnonymous]
     public class SecurityController : BaseController
     {
-        private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
         }
 
@@ -109,11 +107,7 @@ namespace MemberShip.Web.Controllers
 
             if (!result.Succeeded)
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-
+                AddModelErrors(result);
                 return View(model);
             }
 
@@ -179,15 +173,11 @@ namespace MemberShip.Web.Controllers
             if (user == null)
                 return RedirectToAction(nameof(SignIn));
 
-            IdentityResult identityResult = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword); //Token ile beraber şifre resetleme metotu.
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword); //Token ile beraber şifre resetleme metotu.
 
-            if (!identityResult.Succeeded)
+            if (!result.Succeeded)
             {
-                foreach (var error in identityResult.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
-
+                AddModelErrors(result);
                 return View(model);
             }
 

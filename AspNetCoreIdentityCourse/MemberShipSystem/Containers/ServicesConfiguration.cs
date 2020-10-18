@@ -23,9 +23,9 @@ namespace MemberShip.Web.Containers
             {
                 options.Cookie = cookieConfig;
 
-                options.LoginPath = new PathString("/Account/SignIn");
+                options.LoginPath = new PathString("/Security/SignIn");
+                options.LogoutPath = new PathString("/Member/SignOut");
                 options.AccessDeniedPath = new PathString("/AccessDenied");
-                //options.LogoutPath = new PathString("Account/SignOut");
                 options.SlidingExpiration = true; // Kullanıcı cookie ömrünün yarısını geçtikten sonra default olarak verilen değer kadar cookie süresi uzar.
                 options.ExpireTimeSpan = TimeSpan.FromHours(1);
             });

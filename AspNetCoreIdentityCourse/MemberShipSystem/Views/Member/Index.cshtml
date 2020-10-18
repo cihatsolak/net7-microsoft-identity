@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-sm-3">
-        <img src="https://bit.ly/3nKtj9T" style="width:100%;height:100%" />
+        <img src="@Model.Picture" style="width:100%;height:100%" />
     </div>
     <div class="col-sm-9">
         <table class="table table-bordered table-striped">
@@ -23,6 +23,41 @@
             <tr>
                 <th>Phone Number</th>
                 <td>@Model.PhoneNumber</td>
+            </tr>
+            <tr>
+                <th>Birth Date</th>
+                <td>
+                    @if (Model.BirthDate != null)
+                    {
+                        @Model.BirthDate
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>
+                    @if (!string.IsNullOrEmpty(Model.CityName))
+                    {
+                        @Model.CityName
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>Gender</th>
+                <td>
+                    @switch (Model.Gender)
+                    {
+                        case Gender.Unspecified:
+                            <span>Belirtilmemiş</span>
+                            break;
+                        case Gender.Male:
+                            <span>Erkek</span>
+                            break;
+                        case Gender.Female:
+                            <span>Kadın</span>
+                            break;
+                    }
+                </td>
             </tr>
         </table>
     </div>

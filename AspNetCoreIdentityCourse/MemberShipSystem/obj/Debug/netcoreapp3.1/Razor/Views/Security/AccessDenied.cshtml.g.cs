@@ -26,8 +26,15 @@ using MemberShip.Web.ViewModels;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 3 "C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\Views\_ViewImports.cshtml"
+using MemberShip.Web.Tools.Enums;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"79fd5abbcde5045cbe1c871a522b1142cf0966ef", @"/Views/Security/AccessDenied.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"a46f4a6d171dc9edb711ac668c76c57b782b4def", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"33217b40978eb38254146bea1027bbfb55f303d5", @"/Views/_ViewImports.cshtml")]
     public class Views_Security_AccessDenied : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         #pragma warning disable 1998

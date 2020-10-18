@@ -1,30 +1,33 @@
 ﻿using Mapster;
 using MemberShip.Web.Models;
 using MemberShip.Web.Tools;
+using MemberShip.Web.Tools.Enums;
 using MemberShip.Web.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace MemberShip.Web.Controllers
 {
     public class MemberController : BaseController
     {
-        private readonly UserManager<AppUser> _userManager;
+
         private readonly SignInManager<AppUser> _signInManager;
 
-        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager)
         {
-            _userManager = userManager;
             _signInManager = signInManager;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var user = await _userManager.FindByNameAsync(User.Identity.Name);
-
-            var userViewModel = user.Adapt<UserViewModel>(); //Mapster (Nuget Package.)
+            //CurrentUser : BaseController'dan geliyor.
+            var userViewModel = CurrentUser.Adapt<UserViewModel>(); //Mapster (Nuget Package.)
 
             return View(userViewModel);
         }
@@ -41,9 +44,7 @@ namespace MemberShip.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var user = await _userManager.FindByNameAsync(User.Identity.Name); //Kullanıcıyı buluyorum.
-
-            bool isCorrect = await _userManager.CheckPasswordAsync(user, model.OldPassword); //Kullanıcının girdiği eski şifre doğru mu?
+            bool isCorrect = await _userManager.CheckPasswordAsync(CurrentUser, model.OldPassword); //Kullanıcının girdiği eski şifre doğru mu?
 
             if (!isCorrect)
             {
@@ -51,21 +52,89 @@ namespace MemberShip.Web.Controllers
                 return View(model);
             }
 
-            IdentityResult result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword); //Şifre değiştirme işlemi
+            IdentityResult result = await _userManager.ChangePasswordAsync(CurrentUser, model.OldPassword, model.NewPassword); //Şifre değiştirme işlemi
 
             if (!result.Succeeded)
             {
-                foreach (var error in result.Errors)
-                    ModelState.AddModelError(string.Empty, error.Description);
+                AddModelErrors(result); //BaseController'a yazdığım ortak method.
+                return View(model);
             }
 
+            await _userManager.UpdateSecurityStampAsync(CurrentUser); // Kullanıcının şifresini değiştirdiğim için bunu güncellemem gerekir.
+
             /*
-             * Kullanıcının şifresini değiştirdiğim için bunu güncellemem gerekir.
-             * Bunun sonucunda 20 dakika(benim belirlediğim süre) sonra kullanıcıya otomatik olarak çıkış yaptıracak.
+             * Veritabanındaki security stamp değerini güncellediğim için cookie'deki bilgiyi güncellemek adına, kullanıcıya hissettirmeden
+             * önce çıkış sonra giriş işlemi yaptırıyorum.
              */
-            await _userManager.UpdateSecurityStampAsync(user); 
+            await _signInManager.SignOutAsync();
+            await _signInManager.PasswordSignInAsync(CurrentUser, model.NewPassword, true, false);
 
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Edit()
+        {
+            var userViewModel = CurrentUser.Adapt<UserViewModel>(); //CurrentUser baseController'dan geliyor.
+
+            ViewBag.Genders = new SelectList(Enum.GetNames(typeof(Gender)));
+
+            return View(userViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(UserViewModel model, IFormFile userPicture)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            ViewBag.Genders = new SelectList(Enum.GetNames(typeof(Gender)));
+
+            var user = CurrentUser;
+
+            if (userPicture != null && userPicture.Length > 0)
+            {
+                var pictureName = $"{Guid.NewGuid()} {Path.GetExtension(userPicture.FileName)}"; //rastgele isim. Çakışma olmaması adına.
+
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img/pictures", pictureName); //resmin kaydedileceği yer.
+
+                using var stream = new FileStream(path, FileMode.Create);
+                await userPicture.CopyToAsync(stream);
+
+                user.Picture = $"/img/pictures/{pictureName}";
+            }
+
+            user.UserName = model.UserName;
+            user.Email = model.Email;
+            user.PhoneNumber = model.PhoneNumber;
+            user.CityName = model.CityName;
+            user.BirthDate = model.BirthDate;
+            user.Gender = (int)model.Gender;
+
+            IdentityResult result = await _userManager.UpdateAsync(user); //Bilgileri güncelle.
+
+            if (!result.Succeeded)
+            {
+                AddModelErrors(result);
+                return View(model);
+            }
+
+            await _userManager.UpdateSecurityStampAsync(user); //Kullanıcı bilgilerinde değişiklik olduğu için güncelliyorum.
+
+            /*
+             * Uygulamamızın hem mobil hem de web sayfası varsa ve ben web'de kullanıcı adını değiştirip aşağıdaki işlemleri yapmazsam,
+             * mobilden girecek arkadaş farklı username, web den girecek arkadaş farklı username görür. Bundan dolayı giriş çıkış yaptırarak
+             * cookie de yer alan bilgileri güncellemiş oluyorum.
+             */
+            await _signInManager.SignOutAsync();
+            await _signInManager.SignInAsync(user, true);
+
+            return View();
+        }
+
+        public async void SignOut()
+        {
+            await _signInManager.SignOutAsync();
         }
     }
 }

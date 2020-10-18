@@ -45,10 +45,10 @@
                         <a asp-action="PasswordChange" asp-controller="Member">Change Password</a>
                     </li>
                     <li class="list-group-item">
-                        <a asp-action="UserEdit" asp-controller="Member">Edit User</a>
+                        <a asp-action="Edit" asp-controller="Member">Edit User</a>
                     </li>
                     <li class="list-group-item">
-                        <a asp-action="SignOut" asp-controller="Member">Sign Out</a>
+                        <a asp-action="SignOut" asp-controller="Member" asp-route-returnUrl="/Security/SignIn">Sign Out</a>
                     </li>
                 </ul>
             </div>
