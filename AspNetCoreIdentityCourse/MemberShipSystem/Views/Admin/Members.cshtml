@@ -18,19 +18,28 @@ else
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
-                <th scope="col">User Id</th>
                 <th scope="col">Username</th>
+                <th scope="col">City Name</th>
                 <th scope="col">Email</th>
+                <th scope="col">Roles</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var user in Model)
             {
-                <tr>
-                    <td>@user.CityName</td>
-                    <td>@user.UserName</td>
-                    <td>@user.Email</td>
-                </tr>
+            <tr>
+                <td>@user.CityName</td>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>
+                    <user-roles user-id="@user.Id"></user-roles>
+                </td>
+                <td>
+                    <a class="btn btn-success btn-sm"
+                       asp-controller="Role" asp-action="Assign" asp-route-userId="@user.Id">Assign</a>
+                </td>
+            </tr>
             }
         </tbody>
     </table>

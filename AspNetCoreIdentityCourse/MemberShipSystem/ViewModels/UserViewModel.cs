@@ -7,6 +7,8 @@ namespace MemberShip.Web.ViewModels
 {
     public class UserViewModel
     {
+        public string Id { get; set; }
+
         [Required(ErrorMessage = "Kullanıcı ismi gereklidir.")]
         [DisplayName("Kullanıcı Adı")]
         public string UserName { get; set; }

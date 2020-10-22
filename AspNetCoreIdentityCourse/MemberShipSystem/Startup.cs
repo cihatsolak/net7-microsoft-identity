@@ -20,7 +20,9 @@ namespace MemberShipSystem
 
             services.ConfigureIdentity();
 
-            services.ConfigureApplicationCookie();            
+            services.ConfigureApplicationCookie();
+
+            services.AddSession();
 
             services.AddMvc().AddRazorRuntimeCompilation();
         }
@@ -32,7 +34,7 @@ namespace MemberShipSystem
             app.UseStatusCodePages();
             app.UseRouting();
             app.UseStaticFiles();
-            
+            app.UseSession();
             app.UseAuthentication();
             app.UseAuthorization();
 
