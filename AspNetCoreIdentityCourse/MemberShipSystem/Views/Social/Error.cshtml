@@ -1,0 +1,16 @@
+﻿@model List<string>
+@{
+    ViewData["Title"] = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Error</h1>
+
+<div class="alert alert-danger">
+    @foreach (var error in Model)
+    {
+        <p>@error</p>
+    }
+</div>
+
+<a class="btn btn-link" asp-action="SignIn" asp-controller="Security">Go to Sign In</a>

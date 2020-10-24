@@ -55,9 +55,18 @@ namespace MemberShip.Web.Containers
 
             services.Configure<SecurityStampValidatorOptions>(options =>
             {
-                options.ValidationInterval = TimeSpan.FromMinutes(20); 
+                options.ValidationInterval = TimeSpan.FromMinutes(20);
                 //Cookie'de yer alan securitystamp değeriyle veritabanını karşılaştırır uyuşmazlık durumunda oturumu sonlandırır.
                 //Default olarak 30 dakikadır ama ben burda 20 dakikaya çektim.
+            });
+        }
+
+        public static void ConfiguraAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = configuration["Authentication:Facebook:AppId"];
+                options.AppSecret = configuration["Authentication:Facebook:AppSecret"];
             });
         }
 

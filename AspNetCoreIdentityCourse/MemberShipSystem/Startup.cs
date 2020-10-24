@@ -24,6 +24,7 @@ namespace MemberShipSystem
             services.ConfigureDbContext(Configuration);
             services.ConfigureIdentity();
             services.ConfigureApplicationCookie();
+            services.ConfiguraAuthentication(Configuration);
             services.ConfigureAuthorization();
 
             services.AddSession();
