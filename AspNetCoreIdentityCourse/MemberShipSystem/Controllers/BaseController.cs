@@ -16,7 +16,7 @@ namespace MemberShip.Web.Controllers
         protected readonly UserManager<AppUser> _userManager;
         protected readonly SignInManager<AppUser> _signInManager;
         protected readonly RoleManager<AppRole> _roleManager;
-        
+
         protected AppUser CurrentUser => _userManager.FindByNameAsync(User.Identity.Name).Result;
         protected List<AppRole> GetRoles => _roleManager.Roles.ToListAsync().Result;
 
@@ -33,6 +33,11 @@ namespace MemberShip.Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
+        }
+
+        public async void SignOut()
+        {
+            await _signInManager.SignOutAsync();
         }
     }
 }

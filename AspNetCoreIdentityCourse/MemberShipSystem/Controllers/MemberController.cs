@@ -3,6 +3,7 @@ using MemberShip.Web.Models;
 using MemberShip.Web.Tools;
 using MemberShip.Web.Tools.Enums;
 using MemberShip.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,13 +11,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using static MemberShip.Web.Tools.Constants.IdentityConstants;
 
 namespace MemberShip.Web.Controllers
 {
+    [Authorize(Roles = Role.ADMIN + "," + Role.MANAGER + "," + Role.MEMBER)]
     public class MemberController : BaseController
     {
-        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager, signInManager)
+        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)
+            : base(userManager, signInManager, roleManager)
         {
+
         }
 
         [HttpGet]
@@ -128,9 +133,11 @@ namespace MemberShip.Web.Controllers
             return View();
         }
 
-        public async void SignOut()
+        [Authorize(Roles = "Editor")]
+        [HttpGet]
+        public IActionResult EditorPage()
         {
-            await _signInManager.SignOutAsync();
+            return View();
         }
     }
 }

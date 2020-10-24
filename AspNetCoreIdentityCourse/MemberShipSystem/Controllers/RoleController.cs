@@ -137,6 +137,7 @@ namespace MemberShip.Web.Controllers
         public async Task<IActionResult> Assign(List<RoleAssignViewModel> rolesAssignViewModel)
         {
             string userId = HttpContext.Session.GetString("userId");
+            bool transactionStatus = true;
 
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -145,15 +146,23 @@ namespace MemberShip.Web.Controllers
 
             var userRoles = await _userManager.GetRolesAsync(user); //Kullanıcının hazırdaki rolleri.
 
-            IEnumerable<string> rolesToAssigned = rolesAssignViewModel.Where(p => p.Exist && userRoles.Any(name => name != p.Name)).
-                                                  Select(p => p.Name); //Eklenecek Roller
+            IEnumerable<string> rolesToAssigned = null;
+            IEnumerable<string> rolesToRemoved = null;
 
-            IEnumerable<string> rolesToRemoved = rolesAssignViewModel.Where(p => !p.Exist && userRoles.Any(name => name.Equals(p.Name)))
-                                                .Select(p => p.Name); //Kaldırılacak Roller
+            if (userRoles.Any())
+            {
+                rolesToAssigned = rolesAssignViewModel.Where(p => p.Exist && userRoles.Any(name => name != p.Name)).
+                                                Select(p => p.Name); //Eklenecek Roller
 
-            bool transactionStatus = true;
+                rolesToRemoved = rolesAssignViewModel.Where(p => !p.Exist && userRoles.Any(name => name.Equals(p.Name)))
+                                                    .Select(p => p.Name); //Kaldırılacak Roller
+            }
+            else
+            {
+                rolesToAssigned = rolesAssignViewModel.Where(p => p.Exist).Select(p => p.Name);
+            }
 
-            if (rolesToAssigned.Any())
+            if (rolesToAssigned != null && rolesToAssigned.Any())
             {
                 IdentityResult result = await _userManager.AddToRolesAsync(user, rolesToAssigned);
 
@@ -164,7 +173,7 @@ namespace MemberShip.Web.Controllers
                 }
             }
 
-            if (rolesToRemoved.Any())
+            if (rolesToRemoved != null && rolesToRemoved.Any())
             {
                 IdentityResult result = await _userManager.RemoveFromRolesAsync(user, rolesToRemoved);
 
@@ -177,6 +186,7 @@ namespace MemberShip.Web.Controllers
 
             if (!transactionStatus)
                 return View(rolesAssignViewModel);
+
 
             return RedirectToAction(nameof(Assign), new { userId = user.Id });
         }

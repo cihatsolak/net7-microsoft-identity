@@ -439,3 +439,6 @@ C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCo
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Role\Edit.cshtml.g.cs
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Role\List.cshtml.g.cs
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Role\Assign.cshtml.g.cs
+C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Member\EditorPage.cshtml.g.cs
+C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Manager\Index.cshtml.g.cs
+C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ManagerLayout.cshtml.g.cs

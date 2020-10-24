@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tools\NewFolder\" />
     <Folder Include="wwwroot\img\pictures\" />
   </ItemGroup>
 

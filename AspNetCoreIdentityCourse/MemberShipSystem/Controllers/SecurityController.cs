@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using static MemberShip.Web.Tools.Constants.IdentityConstants;
 
 namespace MemberShip.Web.Controllers
 {
@@ -72,10 +73,31 @@ namespace MemberShip.Web.Controllers
 
             await _userManager.ResetAccessFailedCountAsync(user); //Kullanıcının başarılı giriş yaptığı için hatalı giriş sayısını sıfırla.
 
-            if (TempData["ReturnUrl"] != null)
-                return Redirect(TempData["ReturnUrl"] as string);
+            var rolesLoggedUser = await _userManager.GetRolesAsync(user); //Giriş yapan kullanıcının rolleri
 
-            return RedirectToAction("Index", "Member");
+            var returnUrl = TempData[Namer.RETURN_URL] as string;
+
+            if (rolesLoggedUser.Contains(Role.ADMIN))
+            {
+                if (!string.IsNullOrEmpty(returnUrl))
+                    return Redirect(returnUrl);
+
+                return RedirectToAction(Namer.INDEX, Role.ADMIN);
+            }
+            else if (rolesLoggedUser.Contains(Role.MANAGER))
+            {
+                if (!string.IsNullOrEmpty(returnUrl))
+                    return Redirect(returnUrl);
+
+                return RedirectToAction(Namer.INDEX, Role.MANAGER);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(returnUrl))
+                    return Redirect(returnUrl);
+
+                return RedirectToAction(Namer.INDEX, Role.MEMBER);
+            }
         }
 
         [HttpGet]
