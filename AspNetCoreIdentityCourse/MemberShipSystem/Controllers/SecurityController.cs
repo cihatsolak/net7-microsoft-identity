@@ -50,6 +50,15 @@ namespace MemberShip.Web.Controllers
                 return View(model);
             }
 
+            bool isEmailVerified = await _userManager.IsEmailConfirmedAsync(user);
+
+            if (!isEmailVerified)
+            {
+                ModelState.AddModelError(nameof(model.Email), ErrorMessage.EMAIL_NOT_VERIFIED);
+                return View(model);
+            }
+
+
             await _signInManager.SignOutAsync(); //Benim kullanıcı hakkında yazdığım herhangi bir cookie varsa, silinsin.
 
             var signInResult = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
@@ -115,20 +124,33 @@ namespace MemberShip.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var appUser = new AppUser
+            var user = new AppUser
             {
                 UserName = model.UserName,
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber
             };
 
-            IdentityResult result = await _userManager.CreateAsync(appUser, model.Password);
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
                 AddModelErrors(result);
                 return View(model);
             }
+
+            //Kullnıcıyı kayıt ettiysem email doğrulama maili göndereceğim.
+
+            string emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            string verificationLink = Url.Action(nameof(VerificationForEmail), "Security", new //link oluştur
+            {
+                UserId = user.Id,
+                token = emailConfirmationToken
+
+            }, protocol: HttpContext.Request.Scheme);
+
+            Sender.EmailVerification(verificationLink, user.Email); //email gönderme
 
             return RedirectToAction(nameof(SignIn));
         }
@@ -209,6 +231,28 @@ namespace MemberShip.Web.Controllers
             */
 
             await _userManager.UpdateSecurityStampAsync(user);
+
+            return RedirectToAction(nameof(SignIn));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> VerificationForEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+                return RedirectToAction(nameof(SignIn));
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return RedirectToAction(nameof(SignIn));
+
+            IdentityResult result = await _userManager.ConfirmEmailAsync(user, token);
+
+            if (!result.Succeeded)
+            {
+                AddModelErrors(result);
+                return RedirectToAction(nameof(SignIn));
+            }
 
             return RedirectToAction(nameof(SignIn));
         }
