@@ -33,8 +33,15 @@ using MemberShip.Web.Tools.Enums;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 4 "C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\Views\_ViewImports.cshtml"
+using System.Security.Claims;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"68fdd91e07ef53b3665072de7e55d063fbcf433d", @"/Views/Role/List.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"354f27dbc5e9ebd6a63b41407d9d2672b37b6c3d", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"d224877231b8adcc89c24ab4965a19ad2d502679", @"/Views/_ViewImports.cshtml")]
     public class Views_Role_List : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<List<RoleViewModel>>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("class", new global::Microsoft.AspNetCore.Html.HtmlString("btn btn-success my-3"), global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -79,7 +86,7 @@ using MemberShip.Web.Tools.Enums;
 #line hidden
 #nullable disable
             WriteLiteral("\r\n");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "68fdd91e07ef53b3665072de7e55d063fbcf433d5966", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "68fdd91e07ef53b3665072de7e55d063fbcf433d6205", async() => {
                 WriteLiteral("Role Oluştur");
             }
             );
@@ -142,7 +149,7 @@ else
 #line hidden
 #nullable disable
             WriteLiteral("</td>\r\n                    <td>\r\n                        <div class=\"row\">\r\n                            <div class=\"col-md-2\">\r\n                                ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "68fdd91e07ef53b3665072de7e55d063fbcf433d8898", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "68fdd91e07ef53b3665072de7e55d063fbcf433d9137", async() => {
                 WriteLiteral("\r\n                                    <button class=\"btn btn-danger btn-sm\" type=\"submit\">Delete</button>\r\n                                ");
             }
             );
@@ -177,7 +184,7 @@ else
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n                            </div>\r\n                            <div class=\"col-md-2\">\r\n                                ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "68fdd91e07ef53b3665072de7e55d063fbcf433d11870", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "68fdd91e07ef53b3665072de7e55d063fbcf433d12109", async() => {
                 WriteLiteral("Edit");
             }
             );

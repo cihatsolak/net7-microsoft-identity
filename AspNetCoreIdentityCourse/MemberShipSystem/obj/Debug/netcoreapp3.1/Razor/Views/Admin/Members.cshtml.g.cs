@@ -33,8 +33,15 @@ using MemberShip.Web.Tools.Enums;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 4 "C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\Views\_ViewImports.cshtml"
+using System.Security.Claims;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"e429500de22a853663e03b0e0a5316287a8848a1", @"/Views/Admin/Members.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"354f27dbc5e9ebd6a63b41407d9d2672b37b6c3d", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"d224877231b8adcc89c24ab4965a19ad2d502679", @"/Views/_ViewImports.cshtml")]
     public class Views_Admin_Members : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<List<UserViewModel>>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("class", new global::Microsoft.AspNetCore.Html.HtmlString("btn btn-success btn-sm"), global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -140,7 +147,7 @@ else
 #line hidden
 #nullable disable
             WriteLiteral("</td>\r\n                <td>\r\n                    ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("user-roles", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e429500de22a853663e03b0e0a5316287a8848a17198", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("user-roles", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e429500de22a853663e03b0e0a5316287a8848a17437", async() => {
             }
             );
             __MemberShip_Web_TagHelpers_UserRolesTagHelper = CreateTagHelper<global::MemberShip.Web.TagHelpers.UserRolesTagHelper>();
@@ -164,7 +171,7 @@ else
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n                </td>\r\n                <td>\r\n                    ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e429500de22a853663e03b0e0a5316287a8848a18862", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e429500de22a853663e03b0e0a5316287a8848a19101", async() => {
                 WriteLiteral("Assign");
             }
             );

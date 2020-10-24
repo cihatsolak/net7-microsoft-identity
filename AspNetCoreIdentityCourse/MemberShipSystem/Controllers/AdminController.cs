@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using static MemberShip.Web.Tools.Constants.IdentityConstants;
 
@@ -23,6 +24,13 @@ namespace MemberShip.Web.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Claims()
+        {
+            var claims = User.Claims.ToList();
+            return View(claims);
         }
 
         [HttpGet]

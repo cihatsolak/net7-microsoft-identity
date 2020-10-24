@@ -10,15 +10,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using static MemberShip.Web.Tools.Constants.IdentityConstants;
 
 namespace MemberShip.Web.Controllers
 {
-    [Authorize(Roles = Role.ADMIN + "," + Role.MANAGER + "," + Role.MEMBER)]
-    public class MemberController : BaseController
+    [Authorize(Roles = Role.ADMIN + "," + Role.MANAGER + "," + Role.EDITOR)]
+    public class EditorController : BaseController
     {
-        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)
+        public EditorController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)
             : base(userManager, signInManager, roleManager)
         {
 
@@ -133,10 +134,46 @@ namespace MemberShip.Web.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Editor")]
+        [Authorize(Roles = Role.EDITOR)]
         [HttpGet]
         public IActionResult EditorPage()
         {
+            return View();
+        }
+
+        [Authorize(Policy = Policy.CITY)]
+        [HttpGet]
+        public IActionResult CityClaimPage()
+        {
+            return View();
+        }
+
+        [Authorize(Policy = Policy.AGE)]
+        [HttpGet]
+        public IActionResult AgeClaimPage()
+        {
+            return View();
+        }
+
+        [Authorize(Policy = Policy.EXCHANGE)]
+        [HttpGet]
+        public async Task<IActionResult> Exchange()
+        {
+            bool hasClaim = User.HasClaim(p => p.Type.Equals(ClaimName.EXPIRE_DATE_EXCHANGE));
+
+            if (!hasClaim)
+            {
+                var addedDate = DateTime.Now.AddDays(30).Date.ToShortDateString(); //30 Gün boyunca erişebilsin.
+
+                Claim expirteDateExchangeClaim = new Claim(ClaimName.EXPIRE_DATE_EXCHANGE, addedDate, ClaimValueTypes.String, ClaimName.ISSUER);
+
+                await _userManager.AddClaimAsync(CurrentUser, expirteDateExchangeClaim); //Claim ekliyorum.
+
+                //Eklediğim claim'in aktif olması için, kullanıcıya arka tarafta çıkış-giriş yaptırıyorum. Tarayıcı daki cookie değeri de değişsin diye.
+                await _signInManager.SignOutAsync();
+                await _signInManager.SignInAsync(CurrentUser, true);
+            }
+
             return View();
         }
     }

@@ -33,8 +33,15 @@ using MemberShip.Web.Tools.Enums;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 4 "C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\Views\_ViewImports.cshtml"
+using System.Security.Claims;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"aa665bf881152872d97e6f69ff93bf5b2d11fb93", @"/Views/Shared/_Layout.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"354f27dbc5e9ebd6a63b41407d9d2672b37b6c3d", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"d224877231b8adcc89c24ab4965a19ad2d502679", @"/Views/_ViewImports.cshtml")]
     public class Views_Shared__Layout : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("class", new global::Microsoft.AspNetCore.Html.HtmlString("nav-link"), global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -80,7 +87,7 @@ using MemberShip.Web.Tools.Enums;
 #line hidden
 #nullable disable
             WriteLiteral("\r\n<!DOCTYPE html>\r\n\r\n<html>\r\n");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "aa665bf881152872d97e6f69ff93bf5b2d11fb936234", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("head", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "aa665bf881152872d97e6f69ff93bf5b2d11fb936473", async() => {
                 WriteLiteral(@"
     <meta name=""viewport"" content=""width=device-width"" />
     <title>_Layout</title>
@@ -101,7 +108,7 @@ using MemberShip.Web.Tools.Enums;
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "aa665bf881152872d97e6f69ff93bf5b2d11fb937590", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("body", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "aa665bf881152872d97e6f69ff93bf5b2d11fb937829", async() => {
                 WriteLiteral("\r\n\r\n    <nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\r\n        <div class=\"container\">\r\n            <a class=\"navbar-brand\" href=\"#\">\r\n                <img src=\"https://bit.ly/3l4lBFp\" width=\"70\" height=\"40\"");
                 BeginWriteAttribute("alt", " alt=\"", 679, "\"", 685, 0);
                 EndWriteAttribute();
@@ -120,7 +127,7 @@ using MemberShip.Web.Tools.Enums;
 #line hidden
 #nullable disable
                 WriteLiteral("                <div class=\"collapse navbar-collapse\" id=\"navbarNav\">\r\n                    <ul class=\"navbar-nav\">\r\n                        <li class=\"nav-item active\">\r\n                            ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "aa665bf881152872d97e6f69ff93bf5b2d11fb939082", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "aa665bf881152872d97e6f69ff93bf5b2d11fb939321", async() => {
                     WriteLiteral("Home <span class=\"sr-only\">(current)</span>");
                 }
                 );
@@ -139,7 +146,7 @@ using MemberShip.Web.Tools.Enums;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n                        </li>\r\n                        <li class=\"nav-item\">\r\n                            ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "aa665bf881152872d97e6f69ff93bf5b2d11fb9310753", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "aa665bf881152872d97e6f69ff93bf5b2d11fb9310992", async() => {
                     WriteLiteral("Member Index");
                 }
                 );
@@ -158,7 +165,7 @@ using MemberShip.Web.Tools.Enums;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n                        </li>\r\n                        <li class=\"nav-item\">\r\n                            ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "aa665bf881152872d97e6f69ff93bf5b2d11fb9312392", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "aa665bf881152872d97e6f69ff93bf5b2d11fb9312631", async() => {
                     WriteLiteral("Sign Up");
                 }
                 );
@@ -177,7 +184,7 @@ using MemberShip.Web.Tools.Enums;
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n                        </li>\r\n                        <li class=\"nav-item\">\r\n                            ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "aa665bf881152872d97e6f69ff93bf5b2d11fb9314026", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "aa665bf881152872d97e6f69ff93bf5b2d11fb9314265", async() => {
                     WriteLiteral("Sign In");
                 }
                 );

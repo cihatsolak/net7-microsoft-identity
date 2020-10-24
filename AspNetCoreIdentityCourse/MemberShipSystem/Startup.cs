@@ -1,7 +1,12 @@
+using MemberShip.Web.ClaimProviders;
 using MemberShip.Web.Containers;
+using MemberShip.Web.Requirements;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using static MemberShip.Web.Tools.Constants.IdentityConstants;
 
 namespace MemberShipSystem
 {
@@ -17,12 +22,14 @@ namespace MemberShipSystem
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureDbContext(Configuration);
-
             services.ConfigureIdentity();
-
             services.ConfigureApplicationCookie();
+            services.ConfigureAuthorization();
 
             services.AddSession();
+
+            services.AddScoped<IClaimsTransformation, ClaimProvider>(); //Claimi özelleþtirdik, claim'lere ek olarak özellikler ekliyorum bu sýnýf ile.
+            services.AddTransient<IAuthorizationHandler, ExpireDateExchangeHandle>();
 
             services.AddMvc().AddRazorRuntimeCompilation();
         }
