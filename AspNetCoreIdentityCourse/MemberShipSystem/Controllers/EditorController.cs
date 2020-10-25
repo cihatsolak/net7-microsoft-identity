@@ -16,7 +16,8 @@ using static MemberShip.Web.Tools.Constants.IdentityConstants;
 
 namespace MemberShip.Web.Controllers
 {
-    [Authorize(Roles = Role.ADMIN + "," + Role.MANAGER + "," + Role.EDITOR)]
+    //[Authorize(Roles = Role.ADMIN + "," + Role.MANAGER + "," + Role.EDITOR)]
+    [AllowAnonymous]
     public class EditorController : BaseController
     {
         public EditorController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)

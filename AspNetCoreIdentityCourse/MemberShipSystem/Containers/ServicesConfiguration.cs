@@ -63,10 +63,27 @@ namespace MemberShip.Web.Containers
 
         public static void ConfiguraAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAuthentication().AddFacebook(options =>
+            services.AddAuthentication()
+            .AddFacebook(facebookOptions =>
             {
-                options.AppId = configuration["Authentication:Facebook:AppId"];
-                options.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+                facebookOptions.AppId = configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+            })
+            .AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecretKey"];
+            })
+            .AddMicrosoftAccount(microsoftOptions =>
+            {
+                microsoftOptions.ClientId = configuration["Authentication:Microsoft:ClientId"];
+                microsoftOptions.ClientSecret = configuration["Authentication:Microsoft:ClientSecretKey"];
+            })
+            .AddTwitter(twitterOptions =>
+            {
+                twitterOptions.ConsumerKey = configuration["Authentication:Twitter:ConsumerKey"];
+                twitterOptions.ConsumerSecret = configuration["Authentication:Twitter:ConsumerSecret"];
+                twitterOptions.RetrieveUserDetails = true;
             });
         }
 
