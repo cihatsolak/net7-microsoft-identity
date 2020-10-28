@@ -15,14 +15,14 @@ else
 {
     <h4>Members</h4>
     <hr />
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped table-responsive">
         <thead>
             <tr>
                 <th scope="col">City Name</th>
                 <th scope="col">Username</th>
                 <th scope="col">Email</th>
                 <th scope="col">Roles</th>
-                <th scope="col"></th>
+                <th scope="col">Process</th>
             </tr>
         </thead>
         <tbody>
@@ -38,6 +38,9 @@ else
                 <td>
                     <a class="btn btn-success btn-sm"
                        asp-controller="Role" asp-action="Assign" asp-route-userId="@user.Id">Assign</a>
+
+                    <a class="btn btn-info btn-sm"
+                       asp-controller="Admin" asp-action="ChangePasswordForMember" asp-route-userId="@user.Id">Change Password</a>
                 </td>
             </tr>
             }

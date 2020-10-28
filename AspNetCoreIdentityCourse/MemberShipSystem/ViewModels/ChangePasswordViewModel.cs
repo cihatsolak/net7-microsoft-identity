@@ -2,7 +2,7 @@
 
 namespace MemberShip.Web.ViewModels
 {
-    public class PasswordChangeViewModel
+    public class ChangePasswordViewModel
     {
         [Display(Name = "Eski Şifreniz")]
         [Required(ErrorMessage = "Eski şifreniz gereklidir.")]

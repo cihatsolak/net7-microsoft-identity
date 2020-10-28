@@ -4,7 +4,9 @@ using MemberShip.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using static MemberShip.Web.Tools.Constants.IdentityConstants;
 
@@ -13,7 +15,8 @@ namespace MemberShip.Web.Controllers
     [AllowAnonymous]
     public class SecurityController : BaseController
     {
-        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager) : base(userManager, signInManager)
+        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+            : base(userManager, signInManager)
         {
         }
 
@@ -21,7 +24,7 @@ namespace MemberShip.Web.Controllers
         public IActionResult SignIn(string returnUrl)
         {
             if (User.Identity.IsAuthenticated) //Kullanıcı hali hazırda giriş yapmışsa
-                return RedirectToAction("Index", "Editor");
+                return RedirectToAction("Index", "Member");
 
             TempData["ReturnUrl"] = returnUrl;
 
@@ -113,7 +116,7 @@ namespace MemberShip.Web.Controllers
         public IActionResult SignUp()
         {
             if (User.Identity.IsAuthenticated) //Kullanıcı hali hazırda giriş yapmışsa
-                return RedirectToAction("Index", "Editor");
+                return RedirectToAction("Index", "Member");
 
             return View();
         }
@@ -123,6 +126,14 @@ namespace MemberShip.Web.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
+
+            bool isRegisteredPhoneNumber = _userManager.Users.Any(p => p.PhoneNumber.Equals(model.PhoneNumber)); //Girelen telefon numarası kayıtlı mı
+
+            if (isRegisteredPhoneNumber)
+            {
+                ModelState.AddModelError(nameof(model.PhoneNumber), ErrorMessage.PHONE_NUMBER_USE);
+                return View(model);
+            }
 
             var user = new AppUser
             {

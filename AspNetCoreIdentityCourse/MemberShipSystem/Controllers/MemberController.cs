@@ -8,19 +8,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using static MemberShip.Web.Tools.Constants.IdentityConstants;
 
 namespace MemberShip.Web.Controllers
 {
-    //[Authorize(Roles = Role.ADMIN + "," + Role.MANAGER + "," + Role.EDITOR)]
-    [AllowAnonymous]
-    public class EditorController : BaseController
+    public class MemberController : BaseController
     {
-        public EditorController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)
+        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)
             : base(userManager, signInManager, roleManager)
         {
 
@@ -29,6 +29,11 @@ namespace MemberShip.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+
+            }
+
             //CurrentUser : BaseController'dan geliyor.
             var userViewModel = CurrentUser.Adapt<UserViewModel>(); //Mapster (Nuget Package.)
 
@@ -42,7 +47,7 @@ namespace MemberShip.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PasswordChange(PasswordChangeViewModel model)
+        public async Task<IActionResult> PasswordChange(ChangePasswordViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -91,9 +96,22 @@ namespace MemberShip.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            ViewBag.Genders = new SelectList(Enum.GetNames(typeof(Gender)));
-
             var user = CurrentUser;
+
+            var userPhoneNumber = await _userManager.GetPhoneNumberAsync(user);
+
+            if (!userPhoneNumber.Equals(model.PhoneNumber)) //Telefon numarası değiştirmiş demektir.
+            {
+                var isRegisteredPhoneNumber = _userManager.Users.Any(p => p.PhoneNumber.Equals(model.PhoneNumber)); //Girilen telefon db'de var mı?
+
+                if (isRegisteredPhoneNumber)
+                {
+                    ModelState.AddModelError(nameof(model.PhoneNumber), ErrorMessage.PHONE_NUMBER_USE);
+                    return View(model);
+                }
+            }
+
+            ViewBag.Genders = new SelectList(Enum.GetNames(typeof(Gender)));
 
             if (userPicture != null && userPicture.Length > 0)
             {
@@ -106,6 +124,7 @@ namespace MemberShip.Web.Controllers
 
                 user.Picture = $"/img/pictures/{pictureName}";
             }
+
 
             user.UserName = model.UserName;
             user.Email = model.Email;

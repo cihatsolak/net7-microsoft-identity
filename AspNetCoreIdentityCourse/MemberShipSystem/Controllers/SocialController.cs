@@ -61,7 +61,7 @@ namespace MemberShip.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SignInWithSocialResponse(string ReturnUrl = "/Editor/Index")
+        public async Task<IActionResult> SignInWithSocialResponse(string ReturnUrl = "/Member/Index")
         {
             List<string> errors = new List<string>(); //Hataları buna atacağım.
 
@@ -79,7 +79,7 @@ namespace MemberShip.Web.Controllers
                 await _signInManager.ExternalLoginSignInAsync(externalLoginInfo.LoginProvider, externalLoginInfo.ProviderKey, true); //Kullanıcı kayıt olmuşsa bilgileri varsa direk giriş işlemi yaptırıyorum.
 
             if (signInResult.Succeeded) //dönlaha önce giriş yapmış, anasayfaya yendirebilirim.
-                return RedirectToAction("Index", "Editor");
+                return RedirectToAction("Index", "Member");
 
             //Eğer ilk kez giriş yapıyorsa
 
@@ -101,7 +101,7 @@ namespace MemberShip.Web.Controllers
             {
                 user.UserName = externalLoginInfo.Principal.FindFirst(ClaimTypes.Email).Value; //Kullanıcının username i yoksa, email'i username olarak kullan.
             }
-            
+
             var userWithMail = await _userManager.FindByEmailAsync(user.Email); //Email sistemde var mı?
 
             if (userWithMail == null) //Email sistemde kayıtlı değilse.
@@ -144,13 +144,10 @@ namespace MemberShip.Web.Controllers
             }
 
             var asd = User.Identity.Name;
-
+            var asdasdasd = Url.Action("Index", "Member");
             //Burdan sonrası sayfa yönlendirme. Uğraşmak istemedim.
 
-            if (string.IsNullOrEmpty(ReturnUrl))
-                return Redirect(ReturnUrl);
-
-            return RedirectToAction("Index", "Editor");
+            return RedirectToAction("Index", "Member");
         }
 
         [HttpGet]

@@ -9,5 +9,6 @@
         public const string PASSWORD_WRONG = "Şifrenizi kontrol ediniz.";
         public const string EMAIL_NOT_VERIFIED = "Email adresiniz doğrulanmamıştır. Lütfen email adresinizi doğrulayınız.";
         public const string LOGIN_ERROR = "Giriş yapılırken bir hata ile karşılaşıldı.";
+        public const string PHONE_NUMBER_USE = "Girilen telefon numarası kullanımdadır.";
     }
 }
