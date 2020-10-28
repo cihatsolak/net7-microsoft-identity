@@ -81,6 +81,12 @@ namespace MemberShip.Web.Controllers
 
             await _userManager.UpdateSecurityStampAsync(user); //Veri tabanı ve kullanıcının tarayıcındaki security stamp değerini birbiriyle uyumlu hale getiriyorum.
 
+            /*
+             * SecurityStamp değerini update etmezsem kullanıcı eski şifresiyle sitemizde dolaşmaya devam eder. Ne zaman çıkış yaparsa o zaman tekrar yeni şifreyle
+             * girmek zorundadır.
+             * Eger update edersen kullanıcı otomatik olarak sitemize girdiği zaman login ekranına yönlendirilecek.
+             */
+
             return RedirectToAction(nameof(Members));
         }
     }
