@@ -27,7 +27,7 @@ namespace MemberShip.Web.Controllers
 
         [HttpGet]
         public IActionResult Index()
-        {           
+        {
             //CurrentUser : BaseController'dan geliyor.
             var userViewModel = CurrentUser.Adapt<UserViewModel>(); //Mapster (Nuget Package.)
 
@@ -190,5 +190,6 @@ namespace MemberShip.Web.Controllers
 
             return View();
         }
+
     }
 }

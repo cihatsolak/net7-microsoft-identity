@@ -1,9 +1,11 @@
 ﻿using MemberShip.Web.Models;
 using MemberShip.Web.Models.ViewModels;
 using MemberShip.Web.Tools;
+using MemberShip.Web.Tools.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Linq;
@@ -139,7 +141,8 @@ namespace MemberShip.Web.Controllers
             {
                 UserName = model.UserName,
                 Email = model.Email,
-                PhoneNumber = model.PhoneNumber
+                PhoneNumber = model.PhoneNumber,
+                TwoFactor = 0
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
@@ -266,6 +269,32 @@ namespace MemberShip.Web.Controllers
             }
 
             return RedirectToAction(nameof(SignIn));
+        }
+
+        [HttpGet]
+        public IActionResult TwoFactorAuth()
+        {
+            var authenticationViewModel = new AuthenticationViewModel
+            {
+                TwoFactorType = (TwoFactor)CurrentUser.TwoFactor
+            };
+
+            ViewBag.TwoFactorTypes = new SelectList(Enum.GetNames(typeof(TwoFactor)));
+
+            return View(authenticationViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TwoFactorAuth(AuthenticationViewModel model)
+        {
+            sbyte twoFactorType = (sbyte)model.TwoFactorType;
+
+            CurrentUser.TwoFactor = twoFactorType;
+            CurrentUser.TwoFactorEnabled = twoFactorType != 0; //0 ise "hiçbiri seçmiştir."
+
+            await _userManager.UpdateAsync(CurrentUser);
+
+            return RedirectToAction(nameof(TwoFactorAuth));
         }
 
         [HttpGet]
