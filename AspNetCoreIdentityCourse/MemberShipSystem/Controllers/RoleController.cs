@@ -1,6 +1,6 @@
 ﻿using Mapster;
 using MemberShip.Web.Models;
-using MemberShip.Web.ViewModels;
+using MemberShip.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

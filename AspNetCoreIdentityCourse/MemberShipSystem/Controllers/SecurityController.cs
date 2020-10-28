@@ -1,6 +1,6 @@
 ﻿using MemberShip.Web.Models;
+using MemberShip.Web.Models.ViewModels;
 using MemberShip.Web.Tools;
-using MemberShip.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

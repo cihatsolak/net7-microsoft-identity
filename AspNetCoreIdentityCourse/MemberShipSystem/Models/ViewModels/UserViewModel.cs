@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MemberShip.Web.ViewModels
+namespace MemberShip.Web.Models.ViewModels
 {
     public class UserViewModel
     {

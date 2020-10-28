@@ -1,5 +1,5 @@
+using MemberShip.Web;
 using MemberShip.Web.ClaimProviders;
-using MemberShip.Web.Containers;
 using MemberShip.Web.Requirements;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;

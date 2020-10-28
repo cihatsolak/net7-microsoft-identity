@@ -1,4 +1,4 @@
-﻿namespace MemberShip.Web.ViewModels
+﻿namespace MemberShip.Web.Models.ViewModels
 {
     public class RoleAssignViewModel
     {

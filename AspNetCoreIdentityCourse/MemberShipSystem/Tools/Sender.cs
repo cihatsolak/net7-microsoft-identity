@@ -26,7 +26,7 @@ namespace MemberShip.Web.Tools
                 smtpClient.Credentials = new NetworkCredential("fcakiroglu@teknohub.net", "FatihFatih30");
                 smtpClient.Send(mail);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }
@@ -51,7 +51,7 @@ namespace MemberShip.Web.Tools
                 smtpClient.Credentials = new NetworkCredential("fcakiroglu@teknohub.net", "FatihFatih30");
                 smtpClient.Send(mail);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }

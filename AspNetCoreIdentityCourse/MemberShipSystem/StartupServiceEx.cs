@@ -1,7 +1,6 @@
 ﻿using MemberShip.Web.IdentityCustomValidators;
 using MemberShip.Web.Models;
 using MemberShip.Web.Requirements;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,17 +9,19 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using static MemberShip.Web.Tools.Constants.IdentityConstants;
 
-namespace MemberShip.Web.Containers
+namespace MemberShip.Web
 {
-    public static class ServicesConfiguration
+    public static class StartupServiceEx
     {
         public static void ConfigureApplicationCookie(this IServiceCollection services)
         {
-            CookieBuilder cookieConfig = new CookieBuilder();
-            cookieConfig.Name = Cookie.NAME;
-            cookieConfig.HttpOnly = false;
-            cookieConfig.SameSite = SameSiteMode.Strict; //Sadece bana istek yapan sayfadan cookie al.
-            cookieConfig.SecurePolicy = CookieSecurePolicy.SameAsRequest; //İstek http'den yapılmışsa http, https den yapılmışssa https'den cookie al.
+            CookieBuilder cookieConfig = new CookieBuilder
+            {
+                Name = Cookie.NAME,
+                HttpOnly = false,
+                SameSite = SameSiteMode.Strict, //Sadece bana istek yapan sayfadan cookie al.
+                SecurePolicy = CookieSecurePolicy.SameAsRequest //İstek http'den yapılmışsa http, https den yapılmışssa https'den cookie al.
+            };
 
             services.ConfigureApplicationCookie(options =>
             {

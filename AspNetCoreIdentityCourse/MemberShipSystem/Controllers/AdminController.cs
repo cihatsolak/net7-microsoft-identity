@@ -1,14 +1,12 @@
 ﻿using Mapster;
 using MemberShip.Web.Models;
-using MemberShip.Web.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+using MemberShip.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static MemberShip.Web.Tools.Constants.IdentityConstants;
 
 namespace MemberShip.Web.Controllers
 {

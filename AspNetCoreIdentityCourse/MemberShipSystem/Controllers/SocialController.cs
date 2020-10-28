@@ -1,5 +1,4 @@
 ﻿using MemberShip.Web.Models;
-using MemberShip.Web.Tools;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using static MemberShip.Web.Tools.Constants.IdentityConstants;
 
 namespace MemberShip.Web.Controllers
 {
@@ -23,7 +23,7 @@ namespace MemberShip.Web.Controllers
         [HttpGet]
         public IActionResult SignInWithFacebook(string ReturnUrl)
         {
-            string redirectUrl = Url.Action(nameof(SignInWithSocialResponse), "Social", new { ReturnUrl = ReturnUrl });
+            string redirectUrl = Url.Action(nameof(SignInWithSocialResponse), "Social", new { ReturnUrl });
 
             AuthenticationProperties authenticationProperties = _signInManager.ConfigureExternalAuthenticationProperties("Facebook", redirectUrl);
 
@@ -33,7 +33,7 @@ namespace MemberShip.Web.Controllers
         [HttpGet]
         public IActionResult SignInWithGoogle(string ReturnUrl)
         {
-            string redirectUrl = Url.Action(nameof(SignInWithSocialResponse), "Social", new { ReturnUrl = ReturnUrl });
+            string redirectUrl = Url.Action(nameof(SignInWithSocialResponse), "Social", new { ReturnUrl });
 
             AuthenticationProperties authenticationProperties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
 
@@ -43,7 +43,7 @@ namespace MemberShip.Web.Controllers
         [HttpGet]
         public IActionResult SignInWithMicrosoft(string ReturnUrl)
         {
-            string redirectUrl = Url.Action(nameof(SignInWithSocialResponse), "Social", new { ReturnUrl = ReturnUrl });
+            string redirectUrl = Url.Action(nameof(SignInWithSocialResponse), "Social", new { ReturnUrl });
 
             AuthenticationProperties authenticationProperties = _signInManager.ConfigureExternalAuthenticationProperties("Microsoft", redirectUrl);
 
@@ -53,7 +53,7 @@ namespace MemberShip.Web.Controllers
         [HttpGet]
         public IActionResult SignInWithTwitter(string ReturnUrl)
         {
-            string redirectUrl = Url.Action(nameof(SignInWithSocialResponse), "Social", new { ReturnUrl = ReturnUrl });
+            string redirectUrl = Url.Action(nameof(SignInWithSocialResponse), "Social", new { ReturnUrl });
 
             AuthenticationProperties authenticationProperties = _signInManager.ConfigureExternalAuthenticationProperties("Twitter", redirectUrl);
 
@@ -83,9 +83,11 @@ namespace MemberShip.Web.Controllers
 
             //Eğer ilk kez giriş yapıyorsa
 
-            var user = new AppUser();
-            user.EmailConfirmed = true;
-            user.Email = externalLoginInfo.Principal.FindFirst(ClaimTypes.Email).Value; //Kullanıcının email adresi
+            var user = new AppUser
+            {
+                EmailConfirmed = true,
+                Email = externalLoginInfo.Principal.FindFirst(ClaimTypes.Email).Value //Kullanıcının email adresi
+            };
 
             string externalUserId = externalLoginInfo.Principal.FindFirst(ClaimTypes.NameIdentifier).Value; //Kullanıcının user id si
 

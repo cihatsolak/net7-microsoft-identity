@@ -1,8 +1,7 @@
 ﻿using Mapster;
 using MemberShip.Web.Models;
-using MemberShip.Web.Tools;
+using MemberShip.Web.Models.ViewModels;
 using MemberShip.Web.Tools.Enums;
-using MemberShip.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -28,12 +27,7 @@ namespace MemberShip.Web.Controllers
 
         [HttpGet]
         public IActionResult Index()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-
-            }
-
+        {           
             //CurrentUser : BaseController'dan geliyor.
             var userViewModel = CurrentUser.Adapt<UserViewModel>(); //Mapster (Nuget Package.)
 
