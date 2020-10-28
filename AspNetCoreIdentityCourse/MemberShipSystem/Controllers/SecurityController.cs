@@ -2,6 +2,7 @@
 using MemberShip.Web.Models.ViewModels;
 using MemberShip.Web.Tools;
 using MemberShip.Web.Tools.Enums;
+using MemberShip.Web.TwoFactorServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,11 @@ namespace MemberShip.Web.Controllers
     [AllowAnonymous]
     public class SecurityController : BaseController
     {
-        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        private readonly ITwoFactorService _twoFactorService;
+        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITwoFactorService twoFactorService)
             : base(userManager, signInManager)
         {
+            _twoFactorService = twoFactorService;
         }
 
         [HttpGet]
@@ -287,6 +290,9 @@ namespace MemberShip.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> TwoFactorAuth(AuthenticationViewModel model)
         {
+            if (model.TwoFactorType == TwoFactor.MicrosoftGoogle)
+                return RedirectToAction(nameof(TwoFactorWithAuthenticator));
+
             sbyte twoFactorType = (sbyte)model.TwoFactorType;
 
             CurrentUser.TwoFactor = twoFactorType;
@@ -295,6 +301,36 @@ namespace MemberShip.Web.Controllers
             await _userManager.UpdateAsync(CurrentUser);
 
             return RedirectToAction(nameof(TwoFactorAuth));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TwoFactorWithAuthenticator()
+        {
+            string unFormattedKey = await _userManager.GetAuthenticatorKeyAsync(CurrentUser); //Key varmı kontrol et.
+
+            if (string.IsNullOrEmpty(unFormattedKey))
+            {
+                await _userManager.ResetAuthenticatorKeyAsync(CurrentUser); //key oluştur
+
+                unFormattedKey = await _userManager.GetAuthenticatorKeyAsync(CurrentUser); //key'i al.
+            }
+
+            string _authenticatorUri = _twoFactorService.GenerateQrCodeUri(CurrentUser.Email, unFormattedKey);
+
+            var authenticationViewModel = new AuthenticationViewModel
+            {
+                SharedKey = unFormattedKey,
+                AuthenticatorUri = _authenticatorUri,
+            };
+
+            return View(authenticationViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult TwoFactorWithAuthenticator(AuthenticationViewModel model)
+        {
+
+            return View();
         }
 
         [HttpGet]

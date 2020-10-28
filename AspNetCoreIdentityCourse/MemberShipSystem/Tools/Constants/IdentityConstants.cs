@@ -54,5 +54,10 @@
             public const string LOGIN_ERROR = "Giriş yapılırken bir hata ile karşılaşıldı.";
             public const string PHONE_NUMBER_USE = "Girilen telefon numarası kullanımdadır.";
         }
+
+        public static class QrCode
+        {
+            public const string Path = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digit=6";
+        }
     }
 }
