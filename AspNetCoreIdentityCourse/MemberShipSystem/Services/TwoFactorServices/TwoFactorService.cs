@@ -1,9 +1,10 @@
 ﻿using MemberShip.Web.Tools.Settings;
 using Microsoft.Extensions.Options;
+using System;
 using System.Text.Encodings.Web;
 using static MemberShip.Web.Tools.Constants.IdentityConstants;
 
-namespace MemberShip.Web.TwoFactorServices
+namespace MemberShip.Web.Services.TwoFactorServices
 {
     public class TwoFactorService : ITwoFactorService
     {
@@ -21,6 +22,11 @@ namespace MemberShip.Web.TwoFactorServices
             string encodeEmail = _urlEncoder.Encode(email);
 
             return string.Format(QrCode.Path, encodeDomain, encodeEmail, unFormattedKey);
+        }
+
+        public int GetCodeVerification()
+        {
+            return new Random().Next(1000, 999);
         }
     }
 }

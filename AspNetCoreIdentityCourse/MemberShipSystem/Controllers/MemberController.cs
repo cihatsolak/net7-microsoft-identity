@@ -1,8 +1,8 @@
 ﻿using Mapster;
 using MemberShip.Web.Models;
 using MemberShip.Web.Models.ViewModels;
+using MemberShip.Web.Services.TwoFactorServices;
 using MemberShip.Web.Tools.Enums;
-using MemberShip.Web.TwoFactorServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

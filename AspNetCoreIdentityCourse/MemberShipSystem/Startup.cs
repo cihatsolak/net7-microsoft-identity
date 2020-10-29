@@ -1,8 +1,9 @@
 using MemberShip.Web;
 using MemberShip.Web.ClaimProviders;
 using MemberShip.Web.Requirements;
+using MemberShip.Web.Services.SendGridServices;
+using MemberShip.Web.Services.TwoFactorServices;
 using MemberShip.Web.Tools.Settings;
-using MemberShip.Web.TwoFactorServices;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -35,6 +36,7 @@ namespace MemberShipSystem
             services.AddScoped<IClaimsTransformation, ClaimProvider>(); //Claimi özelleþtirdik, claim'lere ek olarak özellikler ekliyorum bu sýnýf ile.
             services.AddTransient<IAuthorizationHandler, ExpireDateExchangeHandle>();
             services.AddScoped<ITwoFactorService, TwoFactorService>();
+            services.AddScoped<ISendGridService, SendGridService>();
 
             services.Configure<SendGridSettings>(Configuration.GetSection(nameof(SendGridSettings)));
             services.Configure<TwoFactorSettings>(Configuration.GetSection(nameof(TwoFactorSettings)));
