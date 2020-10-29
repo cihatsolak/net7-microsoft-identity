@@ -213,10 +213,19 @@ namespace MemberShip.Web.Controllers
             if (model.TwoFactorType == TwoFactor.MicrosoftGoogle)
                 return RedirectToAction(nameof(TwoFactorWithAuthenticator));
 
-            sbyte twoFactorType = (sbyte)model.TwoFactorType;
+            if (model.TwoFactorType == TwoFactor.Phone)
+            {
+                if (string.IsNullOrEmpty(CurrentUser.PhoneNumber)) //Kullanıcı ikili doğrulamayı telefon seçerse ve telefon numarası boş ise.
+                {
+                    ViewBag.TwoFactorTypes = new SelectList(Enum.GetNames(typeof(TwoFactor)));
 
-            CurrentUser.TwoFactor = twoFactorType;
-            CurrentUser.TwoFactorEnabled = twoFactorType != 0; //0 ise "hiçbiri seçmiştir."
+                    ModelState.AddModelError(nameof(model.TwoFactorType), ErrorMessage.PHONE_NUMBER_REQUIRED);
+                    return View(model);
+                }
+            }
+
+            CurrentUser.TwoFactor = (sbyte)model.TwoFactorType;
+            CurrentUser.TwoFactorEnabled = (sbyte)model.TwoFactorType != 0; //0 ise "hiçbiri seçmiştir."
 
             await _userManager.UpdateAsync(CurrentUser);
 

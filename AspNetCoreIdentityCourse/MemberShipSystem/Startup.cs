@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace MemberShipSystem
 {
@@ -31,7 +32,11 @@ namespace MemberShipSystem
             services.ConfiguraAuthentication(Configuration);
             services.ConfigureAuthorization();
 
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(15);
+                options.Cookie.Name = "MainSession";
+            });
 
             services.AddScoped<IClaimsTransformation, ClaimProvider>(); //Claimi özelleþtirdik, claim'lere ek olarak özellikler ekliyorum bu sýnýf ile.
             services.AddTransient<IAuthorizationHandler, ExpireDateExchangeHandle>();
@@ -40,6 +45,8 @@ namespace MemberShipSystem
 
             services.Configure<SendGridSettings>(Configuration.GetSection(nameof(SendGridSettings)));
             services.Configure<TwoFactorSettings>(Configuration.GetSection(nameof(TwoFactorSettings)));
+
+            services.AddHttpContextAccessor();
 
             services.AddMvc().AddRazorRuntimeCompilation();
         }

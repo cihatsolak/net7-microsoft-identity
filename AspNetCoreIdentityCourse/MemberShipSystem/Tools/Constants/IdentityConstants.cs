@@ -16,6 +16,8 @@
             public const string INDEX = "Index";
             public const string SECURITY = "Security";
             public const string RECOVERY_CODES = "RecoveryCodes";
+            public const string VERIFICATION_CODE = "VerificationCode";
+            public const string CURRENT_TIME = "CurrentTime";
         }
 
         public static class Cookie
@@ -61,6 +63,8 @@
             public const string VERIFICATION_CODE_NOT_VALID = "Girdiğiniz doğrulama kodu geçersizdir";
             public const string VERIFICATION_CODE_NOT_MATCHED = "Girdiğiniz doğrulama kodu eşleştirilemedi.";
             public const string FAILED_LOGIN_RIGHT_TRY = "Giriş başarısız. Kalan başarısız deneme hakkınız: {0}";
+            public const string VERIFICATION_TIME_OVER = "Doğrulama kodunu girmek için süreniz bitmiştir. Yeniden giriş yapınız.";
+            public const string PHONE_NUMBER_REQUIRED = "İkili doğrulama için önce telefon numaranızı giriniz.";
         }
 
         public static class QrCode

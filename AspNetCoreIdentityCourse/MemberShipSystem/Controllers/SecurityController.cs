@@ -1,8 +1,10 @@
 ﻿using MemberShip.Web.Models;
 using MemberShip.Web.Models.ViewModels;
-using MemberShip.Web.Tools;
+using MemberShip.Web.Services.SendGridServices;
+using MemberShip.Web.Services.TwoFactorServices;
 using MemberShip.Web.Tools.Enums;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -16,9 +18,13 @@ namespace MemberShip.Web.Controllers
     [AllowAnonymous]
     public class SecurityController : BaseController
     {
-        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        private readonly ISendGridService _sendGridService;
+        private readonly ITwoFactorService _twoFactorService;
+        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ISendGridService sendGridService, ITwoFactorService twoFactorService)
             : base(userManager, signInManager)
         {
+            _sendGridService = sendGridService;
+            _twoFactorService = twoFactorService;
         }
 
         [HttpGet]
@@ -88,6 +94,8 @@ namespace MemberShip.Web.Controllers
 
             if (signInResult.RequiresTwoFactor) //İki faktörlü doğrulama var ise. yani two faktör true ise.
             {
+                HttpContext.Session.Remove(Namer.CURRENT_TIME); //2 dakikayı sıfırlıyorum.
+
                 return RedirectToAction(nameof(TwoFactorSignIn), new { rememberMe = model.RememberMe });
             }
 
@@ -107,6 +115,18 @@ namespace MemberShip.Web.Controllers
                 RememberMe = rememberMe,
                 TwoFactorType = (TwoFactor)user.TwoFactor
             };
+
+            if ((TwoFactor)user.TwoFactor == TwoFactor.Email)
+            {
+                int secondsRemaining = _twoFactorService.TimeLeft(); //Kodu girmek için kalan saniye.
+
+                if (0 >= secondsRemaining) //Hiç vakit kalmadıysa.
+                    return RedirectToAction(nameof(SignIn));
+
+                int sentCode = await _sendGridService.SendVerificationCodeAsync(user.Email, user.UserName); //Email ile doğrulama kodunu gönder.
+
+                ViewBag.SecondsRemaining = secondsRemaining; //Saniyeyi view'e taşıyacağım.
+            }
 
             return View(twoFactorSignInViewModel);
         }
@@ -140,6 +160,32 @@ namespace MemberShip.Web.Controllers
                     ModelState.AddModelError(string.Empty, ErrorMessage.VERIFICATION_CODE_NOT_MATCHED);
                     return View(model);
                 }
+
+                return Redirect(ReturnHomePageUrl());
+            }
+            else if ((TwoFactor)user.TwoFactor == TwoFactor.Email || (TwoFactor)user.TwoFactor == TwoFactor.Phone)
+            {
+                int remainingTime = _twoFactorService.TimeLeft(); //session daki süreyi alıyorum.
+                int code = (int)HttpContext.Session.GetInt32(Namer.VERIFICATION_CODE);
+
+                if (0 >= remainingTime)
+                {
+                    ModelState.AddModelError(nameof(model.VerificationCode), ErrorMessage.VERIFICATION_TIME_OVER);
+                    return View(model);
+                }
+
+                if (int.Parse(model.VerificationCode) != code) //Girdiği kod eşleşmiyor ise.
+                {
+                    ModelState.AddModelError(nameof(model.VerificationCode), ErrorMessage.VERIFICATION_CODE_NOT_MATCHED);
+                    return View(model);
+                }
+
+                await _signInManager.SignOutAsync();
+                await _signInManager.SignInAsync(user, model.RememberMe);
+
+                //Sessiondan verileri siliyorum.
+                HttpContext.Session.Remove(Namer.CURRENT_TIME);
+                HttpContext.Session.Remove(Namer.VERIFICATION_CODE);
 
                 return Redirect(ReturnHomePageUrl());
             }
@@ -197,7 +243,7 @@ namespace MemberShip.Web.Controllers
 
             }, protocol: HttpContext.Request.Scheme);
 
-            Sender.EmailVerification(verificationLink, user.Email); //email gönderme
+            await _sendGridService.SendEmailVerificationAsync(user.Email, user.UserName, verificationLink); //Doğrulama maili gönderiyorum
 
             return RedirectToAction(nameof(SignIn));
         }
@@ -230,7 +276,7 @@ namespace MemberShip.Web.Controllers
                 token = passwordResetToken
             }, HttpContext.Request.Protocol); // Şifre sıfırlama linki oluşturuldu.
 
-            Sender.PasswordResetMail(passwordResetLink, user.Email); //Şifre sıfırlama maili gönderildi.
+            await _sendGridService.SendPasswordResetEmailAsync(user.Email, user.UserName, passwordResetLink); //Şifre sıfırlama linki gönder.
 
             return RedirectToAction(nameof(SignIn));
         }

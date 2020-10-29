@@ -55,12 +55,15 @@ namespace MemberShip.Web.Services.SendGridServices
         {
             var apiKey = _sendGridSettings.Value.ApiKey;
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("ogreniyorum@identity.com", "Identity Ögreniyorum");
+            var from = new EmailAddress(_sendGridSettings.Value.From, _sendGridSettings.Value.Name);
             var to = new EmailAddress(email, $"{fullName}");
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = await client.SendEmailAsync(msg);
 
-            return response.StatusCode == HttpStatusCode.OK;
+            if (response.StatusCode == HttpStatusCode.Accepted || response.StatusCode == HttpStatusCode.OK)
+                return true;
+
+            return false;
         }
     }
 }

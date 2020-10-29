@@ -33,6 +33,16 @@
             </div>
         </form>
 
+        @if (Model.TwoFactorType == TwoFactor.Email || Model.TwoFactorType == TwoFactor.Phone)
+        {
+            <div class="alert alert-warning">
+                <span class="text-dark" id="minutes"></span> dakika
+                <span class="text-danger" id="seconds"></span> saniye
+                kaldı
+            </div>
+        }
+
+
         <div class="alert alert-danger">
             @switch (Model.TwoFactorType)
             {
@@ -53,3 +63,35 @@
     </div>
 </div>
 
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(() => {
+            var timeLeft = parseInt("@ViewBag.SecondsRemaining");
+
+            function makeTimer() {
+                var minutes = Math.floor(timeLeft / 60);
+                var seconds = Math.floor(timeLeft - (minutes * 60));
+
+                if (minutes < 10) {
+                    minutes = "0" + minutes;
+                }
+
+                if (seconds < 10) {
+                    seconds = "0" + seconds;
+                }
+
+                $("#minutes").html(minutes);
+                $("#seconds").html(seconds);
+
+                timeLeft--
+                if (timeLeft == 0) {
+                    window.location.href = "Security/SignIn";
+                }
+            }
+
+            makeTimer();
+
+            setInterval(() => makeTimer(),1000);
+        });
+    </script>
+} 
