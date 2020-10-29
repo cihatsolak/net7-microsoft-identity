@@ -9,5 +9,6 @@ namespace MemberShip.Web.Models
         public string Picture { get; set; }
         public DateTime? BirthDate { get; set; }
         public int Gender { get; set; }
+        public sbyte? TwoFactor { get; set; }
     }
 }

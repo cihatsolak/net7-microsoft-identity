@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using MemberShip.Web.Models;
 using MemberShip.Web.Models.ViewModels;
+using MemberShip.Web.Services.TwoFactorServices;
 using MemberShip.Web.Tools.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -19,15 +21,16 @@ namespace MemberShip.Web.Controllers
 {
     public class MemberController : BaseController
     {
-        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)
+        private readonly ITwoFactorService _twoFactorService;
+        public MemberController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager, ITwoFactorService twoFactorService)
             : base(userManager, signInManager, roleManager)
         {
-
+            _twoFactorService = twoFactorService;
         }
 
         [HttpGet]
         public IActionResult Index()
-        {           
+        {
             //CurrentUser : BaseController'dan geliyor.
             var userViewModel = CurrentUser.Adapt<UserViewModel>(); //Mapster (Nuget Package.)
 
@@ -190,5 +193,91 @@ namespace MemberShip.Web.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public IActionResult TwoFactorAuth()
+        {
+            var authenticationViewModel = new AuthenticationViewModel
+            {
+                TwoFactorType = (TwoFactor)CurrentUser.TwoFactor
+            };
+
+            ViewBag.TwoFactorTypes = new SelectList(Enum.GetNames(typeof(TwoFactor)));
+
+            return View(authenticationViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TwoFactorAuth(AuthenticationViewModel model)
+        {
+            if (model.TwoFactorType == TwoFactor.MicrosoftGoogle)
+                return RedirectToAction(nameof(TwoFactorWithAuthenticator));
+
+            if (model.TwoFactorType == TwoFactor.Phone)
+            {
+                if (string.IsNullOrEmpty(CurrentUser.PhoneNumber)) //Kullanıcı ikili doğrulamayı telefon seçerse ve telefon numarası boş ise.
+                {
+                    ViewBag.TwoFactorTypes = new SelectList(Enum.GetNames(typeof(TwoFactor)));
+
+                    ModelState.AddModelError(nameof(model.TwoFactorType), ErrorMessage.PHONE_NUMBER_REQUIRED);
+                    return View(model);
+                }
+            }
+
+            CurrentUser.TwoFactor = (sbyte)model.TwoFactorType;
+            CurrentUser.TwoFactorEnabled = (sbyte)model.TwoFactorType != 0; //0 ise "hiçbiri seçmiştir."
+
+            await _userManager.UpdateAsync(CurrentUser);
+
+            return RedirectToAction(nameof(TwoFactorAuth));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TwoFactorWithAuthenticator()
+        {
+            string unFormattedKey = await _userManager.GetAuthenticatorKeyAsync(CurrentUser); //Key varmı kontrol et.
+
+            if (string.IsNullOrEmpty(unFormattedKey))
+            {
+                await _userManager.ResetAuthenticatorKeyAsync(CurrentUser); //key oluştur
+
+                unFormattedKey = await _userManager.GetAuthenticatorKeyAsync(CurrentUser); //key'i al.
+            }
+
+            string _authenticatorUri = _twoFactorService.GenerateQrCodeUri(CurrentUser.Email, unFormattedKey);
+
+            var authenticationViewModel = new AuthenticationViewModel
+            {
+                SharedKey = unFormattedKey,
+                AuthenticatorUri = _authenticatorUri,
+            };
+
+            return View(authenticationViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TwoFactorWithAuthenticator(AuthenticationViewModel model)
+        {
+            string verificationCode = model.VerificationCode.Replace(" ", string.Empty).Replace("-", string.Empty); //Doğrulama kodunu kullanıcı yanlış yazabilir, temiz hale getir.
+
+            string tokenProvider = _userManager.Options.Tokens.AuthenticatorTokenProvider; //Token Provider'ı al.
+
+            bool twoFactorTokenValid = await _userManager.VerifyTwoFactorTokenAsync(CurrentUser, tokenProvider, verificationCode);
+
+            if (!twoFactorTokenValid)
+            {
+                ModelState.AddModelError(string.Empty, ErrorMessage.VERIFICATION_CODE_NOT_VALID);
+                return View(model);
+            }
+
+            CurrentUser.TwoFactorEnabled = true;
+            CurrentUser.TwoFactor = (sbyte)TwoFactor.MicrosoftGoogle;
+
+            IEnumerable<string> recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(CurrentUser, Identity.RECOVERY_CODE_COUNT); //5 Adet sıfırlama kodu üret.
+            TempData[Namer.RECOVERY_CODES] = recoveryCodes;
+
+            return RedirectToAction(nameof(TwoFactorAuth));
+        }
+
     }
 }

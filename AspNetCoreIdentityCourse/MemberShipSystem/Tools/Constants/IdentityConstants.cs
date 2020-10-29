@@ -7,12 +7,17 @@
             public const string ADMIN = "Admin";
             public const string MANAGER = "Manager";
             public const string EDITOR = "Editor";
+            public const string MEMBER = "Member";
         }
 
         public static class Namer
         {
             public const string RETURN_URL = "ReturnUrl";
             public const string INDEX = "Index";
+            public const string SECURITY = "Security";
+            public const string RECOVERY_CODES = "RecoveryCodes";
+            public const string VERIFICATION_CODE = "VerificationCode";
+            public const string CURRENT_TIME = "CurrentTime";
         }
 
         public static class Cookie
@@ -26,6 +31,8 @@
         public static class Identity
         {
             public const string ALLOWED_USERNAME_CHARACTERS = "abcdefghijklmnoöpqrsştuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._()";
+            public const int FAILED_ENTRY_RIGHT = 3;
+            public const int RECOVERY_CODE_COUNT = 5;
         }
 
         public static class ClaimName
@@ -53,6 +60,16 @@
             public const string EMAIL_NOT_VERIFIED = "Email adresiniz doğrulanmamıştır. Lütfen email adresinizi doğrulayınız.";
             public const string LOGIN_ERROR = "Giriş yapılırken bir hata ile karşılaşıldı.";
             public const string PHONE_NUMBER_USE = "Girilen telefon numarası kullanımdadır.";
+            public const string VERIFICATION_CODE_NOT_VALID = "Girdiğiniz doğrulama kodu geçersizdir";
+            public const string VERIFICATION_CODE_NOT_MATCHED = "Girdiğiniz doğrulama kodu eşleştirilemedi.";
+            public const string FAILED_LOGIN_RIGHT_TRY = "Giriş başarısız. Kalan başarısız deneme hakkınız: {0}";
+            public const string VERIFICATION_TIME_OVER = "Doğrulama kodunu girmek için süreniz bitmiştir. Yeniden giriş yapınız.";
+            public const string PHONE_NUMBER_REQUIRED = "İkili doğrulama için önce telefon numaranızı giriniz.";
+        }
+
+        public static class QrCode
+        {
+            public const string Path = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digit=6";
         }
     }
 }

@@ -1,6 +1,10 @@
 using MemberShip.Web;
 using MemberShip.Web.ClaimProviders;
 using MemberShip.Web.Requirements;
+using MemberShip.Web.Services.SendGridServices;
+using MemberShip.Web.Services.SmsServices;
+using MemberShip.Web.Services.TwoFactorServices;
+using MemberShip.Web.Tools.Settings;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace MemberShipSystem
 {
@@ -28,10 +33,21 @@ namespace MemberShipSystem
             services.ConfiguraAuthentication(Configuration);
             services.ConfigureAuthorization();
 
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(15);
+                options.Cookie.Name = "MainSession";
+            });
 
             services.AddScoped<IClaimsTransformation, ClaimProvider>(); //Claimi özelleþtirdik, claim'lere ek olarak özellikler ekliyorum bu sýnýf ile.
             services.AddTransient<IAuthorizationHandler, ExpireDateExchangeHandle>();
+            services.AddScoped<ITwoFactorService, TwoFactorService>();
+            services.AddScoped<ICommunicationService, CommunicationService>();
+
+            services.Configure<SendGridSettings>(Configuration.GetSection(nameof(SendGridSettings)));
+            services.Configure<TwoFactorSettings>(Configuration.GetSection(nameof(TwoFactorSettings)));
+
+            services.AddHttpContextAccessor();
 
             services.AddMvc().AddRazorRuntimeCompilation();
         }
@@ -55,7 +71,7 @@ namespace MemberShipSystem
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=Security}/{action=SignIn}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Member}/{action=Index}/{id?}");
             });
         }
     }

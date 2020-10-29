@@ -1,0 +1,97 @@
+﻿@model TwoFactorSignInViewModel
+
+@{
+    ViewData["Title"] = "TwoFactorSignIn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+
+        <form asp-action="TwoFactorSignIn" method="post">
+
+            <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+            @Html.HiddenFor(p => p.TwoFactorType)
+
+            <div class="form-group">
+                <label asp-for="VerificationCode" class="control-label"></label>
+                <input asp-for="VerificationCode" class="form-control" />
+                <span asp-validation-for="VerificationCode" class="text-danger"></span>
+            </div>
+
+            @if (Model.TwoFactorType == TwoFactor.MicrosoftGoogle)
+            {
+                <div class="form-group form-check">
+                    <input type="checkbox" asp-for="IsRecoverycode" class="form-check-input" />
+                    <label asp-for="IsRecoverycode" class="form-check-label"></label>
+                </div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Verify Sign In" class="btn btn-success" />
+            </div>
+        </form>
+
+        @if (Model.TwoFactorType == TwoFactor.Email || Model.TwoFactorType == TwoFactor.Phone)
+        {
+            <div class="alert alert-warning">
+                <span class="text-dark" id="minutes"></span> dakika
+                <span class="text-danger" id="seconds"></span> saniye
+                kaldı
+            </div>
+        }
+
+
+        <div class="alert alert-danger">
+            @switch (Model.TwoFactorType)
+            {
+                case TwoFactor.Phone:
+                    <span>Telefonunuza gelen sms doğrulama kodunuzu giriniz.</span>
+                    break;
+                case TwoFactor.Email:
+                    <span>Email ile gelen sms doğrulama kodunuzu giriniz.</span>
+                    break;
+                case TwoFactor.MicrosoftGoogle:
+                    <span>Microsoft/Google Authenticator uygulamanızdaki doğrulama kodunu giriniz.</span>
+                    break;
+                default:
+                    break;
+            }
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(() => {
+            var timeLeft = parseInt("@ViewBag.SecondsRemaining");
+
+            function makeTimer() {
+                var minutes = Math.floor(timeLeft / 60);
+                var seconds = Math.floor(timeLeft - (minutes * 60));
+
+                if (minutes < 10) {
+                    minutes = "0" + minutes;
+                }
+
+                if (seconds < 10) {
+                    seconds = "0" + seconds;
+                }
+
+                $("#minutes").html(minutes);
+                $("#seconds").html(seconds);
+
+                timeLeft--
+                if (timeLeft == 0) {
+                    window.location.href = "Security/SignIn";
+                }
+            }
+
+            makeTimer();
+
+            setInterval(() => makeTimer(),1000);
+        });
+    </script>
+} 
