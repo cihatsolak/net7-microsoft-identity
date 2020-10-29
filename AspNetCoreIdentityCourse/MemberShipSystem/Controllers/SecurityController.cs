@@ -2,11 +2,9 @@
 using MemberShip.Web.Models.ViewModels;
 using MemberShip.Web.Tools;
 using MemberShip.Web.Tools.Enums;
-using MemberShip.Web.TwoFactorServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Linq;
@@ -18,20 +16,18 @@ namespace MemberShip.Web.Controllers
     [AllowAnonymous]
     public class SecurityController : BaseController
     {
-        private readonly ITwoFactorService _twoFactorService;
-        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITwoFactorService twoFactorService)
+        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
             : base(userManager, signInManager)
         {
-            _twoFactorService = twoFactorService;
         }
 
         [HttpGet]
-        public IActionResult SignIn(string returnUrl)
+        public IActionResult SignIn(string returnUrl = "/")
         {
             if (User.Identity.IsAuthenticated) //Kullanıcı hali hazırda giriş yapmışsa
-                return RedirectToAction("Index", "Member");
+                return Redirect(returnUrl);
 
-            TempData["ReturnUrl"] = returnUrl;
+            TempData[Namer.RETURN_URL] = returnUrl;
 
             return View();
         }
@@ -58,7 +54,7 @@ namespace MemberShip.Web.Controllers
                 return View(model);
             }
 
-            bool isEmailVerified = await _userManager.IsEmailConfirmedAsync(user);
+            bool isEmailVerified = await _userManager.IsEmailConfirmedAsync(user); //Kullanıcı email adresini doğrulamış mı?
 
             if (!isEmailVerified)
             {
@@ -66,17 +62,14 @@ namespace MemberShip.Web.Controllers
                 return View(model);
             }
 
+            bool isCheckPassword = await _userManager.CheckPasswordAsync(user, model.Password); //Girilen şifre doğru mu?
 
-            await _signInManager.SignOutAsync(); //Benim kullanıcı hakkında yazdığım herhangi bir cookie varsa, silinsin.
-
-            var signInResult = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
-
-            if (!signInResult.Succeeded)
+            if (!isCheckPassword)
             {
                 await _userManager.AccessFailedAsync(user); //Hatalı giriş sayısını +1 arttır.
-                int failedLogins = await _userManager.GetAccessFailedCountAsync(user); //Kullanıcının hatalı giriş sayısını arttır.
+                int failedCount = await _userManager.GetAccessFailedCountAsync(user); //Kullanıcının hatalı giriş sayısını getir.
 
-                if (failedLogins == 3)
+                if (failedCount == Identity.FAILED_ENTRY_RIGHT) //Hatalı giriş sayısı 3 ise.
                 {
                     await _userManager.SetLockoutEndDateAsync(user, new DateTimeOffset(DateTime.Now.AddMinutes(20)));//Kullanıcının hesabını 20 dakika kilitle.
                     ModelState.AddModelError(string.Empty, ErrorMessage.INCORRECT_LOGIN);
@@ -84,44 +77,81 @@ namespace MemberShip.Web.Controllers
                     return View(model);
                 }
 
-                ModelState.AddModelError(string.Empty, $"{ErrorMessage.FAILED_LOGIN} Kalan başarısız deneme hakkınız: {3 - failedLogins}");
+                ModelState.AddModelError(string.Empty, string.Format(ErrorMessage.FAILED_LOGIN_RIGHT_TRY, Identity.FAILED_ENTRY_RIGHT - failedCount));
                 return View(model);
             }
 
+            await _signInManager.SignOutAsync(); //Benim kullanıcı hakkında yazdığım herhangi bir cookie varsa, silinsin.
             await _userManager.ResetAccessFailedCountAsync(user); //Kullanıcının başarılı giriş yaptığı için hatalı giriş sayısını sıfırla.
 
-            var rolesLoggedUser = await _userManager.GetRolesAsync(user); //Giriş yapan kullanıcının rolleri
+            var signInResult = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, false);
 
-            var returnUrl = TempData[Namer.RETURN_URL] as string;
-
-            if (rolesLoggedUser.Contains(Role.ADMIN))
+            if (signInResult.RequiresTwoFactor) //İki faktörlü doğrulama var ise. yani two faktör true ise.
             {
-                if (!string.IsNullOrEmpty(returnUrl))
-                    return Redirect(returnUrl);
-
-                return RedirectToAction(Namer.INDEX, Role.ADMIN);
+                return RedirectToAction(nameof(TwoFactorSignIn), new { rememberMe = model.RememberMe });
             }
-            else if (rolesLoggedUser.Contains(Role.MANAGER))
+
+            return Redirect(ReturnHomePageUrl());
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TwoFactorSignIn(bool rememberMe = false)
+        {
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync(); //İki faktörlü doğrulamayı kullanan kullanıcıyı getir.
+
+            if (user == null)
+                return RedirectToAction(nameof(SignIn));
+
+            var twoFactorSignInViewModel = new TwoFactorSignInViewModel
             {
-                if (!string.IsNullOrEmpty(returnUrl))
-                    return Redirect(returnUrl);
+                RememberMe = rememberMe,
+                TwoFactorType = (TwoFactor)user.TwoFactor
+            };
 
-                return RedirectToAction(Namer.INDEX, Role.MANAGER);
-            }
-            else
+            return View(twoFactorSignInViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> TwoFactorSignIn(TwoFactorSignInViewModel model)
+        {
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync(); //İki faktörlü doğrulamayı kullanan kullanıcıyı getir.
+
+            if (user == null)
+                return RedirectToAction(nameof(SignIn));
+
+            ModelState.Clear();
+
+            Microsoft.AspNetCore.Identity.SignInResult signInResult = null;
+
+            if ((TwoFactor)user.TwoFactor == TwoFactor.MicrosoftGoogle) //Google ya da Microsoft Authenticator kullanıyorsa?
             {
-                if (!string.IsNullOrEmpty(returnUrl))
-                    return Redirect(returnUrl);
+                if (model.IsRecoverycode) //Sıfırlama kodu girdiyse, kullanıcı telefonuna erişemiyorsa.
+                {
+                    signInResult = await _signInManager.TwoFactorRecoveryCodeSignInAsync(model.VerificationCode);
+                }
+                else
+                {
+                    signInResult = await _signInManager.TwoFactorAuthenticatorSignInAsync(model.VerificationCode, model.RememberMe, false);
+                    //Remember Client = Kullanıcı bir kez doğrulama kodu girdiğinde ve başarılı olduğunda cookie'ye kaydet ve bir daha doğrulama kodu isteme. Bu özellik güvenli olmadığından false verdik. 
+                }
 
-                return RedirectToAction(Namer.INDEX, Role.EDITOR);
+                if (!signInResult.Succeeded)
+                {
+                    ModelState.AddModelError(string.Empty, ErrorMessage.VERIFICATION_CODE_NOT_MATCHED);
+                    return View(model);
+                }
+
+                return Redirect(ReturnHomePageUrl());
             }
+
+            return View(model);
         }
 
         [HttpGet]
         public IActionResult SignUp()
         {
             if (User.Identity.IsAuthenticated) //Kullanıcı hali hazırda giriş yapmışsa
-                return RedirectToAction("Index", "Member");
+                return Redirect(ReturnHomePageUrl());
 
             return View();
         }
@@ -160,7 +190,7 @@ namespace MemberShip.Web.Controllers
 
             string emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            string verificationLink = Url.Action(nameof(VerificationForEmail), "Security", new //link oluştur
+            string verificationLink = Url.Action(nameof(VerificationForEmail), Namer.SECURITY, new //link oluştur
             {
                 UserId = user.Id,
                 token = emailConfirmationToken
@@ -194,7 +224,7 @@ namespace MemberShip.Web.Controllers
 
             string passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user); // Şifre sıfırlama token'ını oluşturuyoruz.
 
-            string passwordResetLink = Url.Action(nameof(ResetPasswordConfirm), "Security", new
+            string passwordResetLink = Url.Action(nameof(ResetPasswordConfirm), Namer.SECURITY, new
             {
                 userId = user.Id,
                 token = passwordResetToken
@@ -272,65 +302,6 @@ namespace MemberShip.Web.Controllers
             }
 
             return RedirectToAction(nameof(SignIn));
-        }
-
-        [HttpGet]
-        public IActionResult TwoFactorAuth()
-        {
-            var authenticationViewModel = new AuthenticationViewModel
-            {
-                TwoFactorType = (TwoFactor)CurrentUser.TwoFactor
-            };
-
-            ViewBag.TwoFactorTypes = new SelectList(Enum.GetNames(typeof(TwoFactor)));
-
-            return View(authenticationViewModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> TwoFactorAuth(AuthenticationViewModel model)
-        {
-            if (model.TwoFactorType == TwoFactor.MicrosoftGoogle)
-                return RedirectToAction(nameof(TwoFactorWithAuthenticator));
-
-            sbyte twoFactorType = (sbyte)model.TwoFactorType;
-
-            CurrentUser.TwoFactor = twoFactorType;
-            CurrentUser.TwoFactorEnabled = twoFactorType != 0; //0 ise "hiçbiri seçmiştir."
-
-            await _userManager.UpdateAsync(CurrentUser);
-
-            return RedirectToAction(nameof(TwoFactorAuth));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> TwoFactorWithAuthenticator()
-        {
-            string unFormattedKey = await _userManager.GetAuthenticatorKeyAsync(CurrentUser); //Key varmı kontrol et.
-
-            if (string.IsNullOrEmpty(unFormattedKey))
-            {
-                await _userManager.ResetAuthenticatorKeyAsync(CurrentUser); //key oluştur
-
-                unFormattedKey = await _userManager.GetAuthenticatorKeyAsync(CurrentUser); //key'i al.
-            }
-
-            string _authenticatorUri = _twoFactorService.GenerateQrCodeUri(CurrentUser.Email, unFormattedKey);
-
-            var authenticationViewModel = new AuthenticationViewModel
-            {
-                SharedKey = unFormattedKey,
-                AuthenticatorUri = _authenticatorUri,
-            };
-
-            return View(authenticationViewModel);
-        }
-
-        [HttpPost]
-        public IActionResult TwoFactorWithAuthenticator(AuthenticationViewModel model)
-        {
-
-            return View();
         }
 
         [HttpGet]

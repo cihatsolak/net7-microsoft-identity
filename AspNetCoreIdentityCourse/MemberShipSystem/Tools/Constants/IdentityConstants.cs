@@ -7,12 +7,15 @@
             public const string ADMIN = "Admin";
             public const string MANAGER = "Manager";
             public const string EDITOR = "Editor";
+            public const string MEMBER = "Member";
         }
 
         public static class Namer
         {
             public const string RETURN_URL = "ReturnUrl";
             public const string INDEX = "Index";
+            public const string SECURITY = "Security";
+            public const string RECOVERY_CODES = "RecoveryCodes";
         }
 
         public static class Cookie
@@ -26,6 +29,8 @@
         public static class Identity
         {
             public const string ALLOWED_USERNAME_CHARACTERS = "abcdefghijklmnoöpqrsştuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._()";
+            public const int FAILED_ENTRY_RIGHT = 3;
+            public const int RECOVERY_CODE_COUNT = 5;
         }
 
         public static class ClaimName
@@ -53,6 +58,9 @@
             public const string EMAIL_NOT_VERIFIED = "Email adresiniz doğrulanmamıştır. Lütfen email adresinizi doğrulayınız.";
             public const string LOGIN_ERROR = "Giriş yapılırken bir hata ile karşılaşıldı.";
             public const string PHONE_NUMBER_USE = "Girilen telefon numarası kullanımdadır.";
+            public const string VERIFICATION_CODE_NOT_VALID = "Girdiğiniz doğrulama kodu geçersizdir";
+            public const string VERIFICATION_CODE_NOT_MATCHED = "Girdiğiniz doğrulama kodu eşleştirilemedi.";
+            public const string FAILED_LOGIN_RIGHT_TRY = "Giriş başarısız. Kalan başarısız deneme hakkınız: {0}";
         }
 
         public static class QrCode

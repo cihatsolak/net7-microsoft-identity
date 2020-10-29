@@ -1,8 +1,26 @@
 ﻿@model AuthenticationViewModel
 
 @{
+    var recoveryCodes = TempData["RecoveryCodes"] as IEnumerable<string>;
+
     ViewData["Title"] = "TwoFactorAuth";
     Layout = "~/Views/Shared/_MemberLayout.cshtml";
+}
+
+@if (recoveryCodes != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-danger h3">Kurtarma Kodları</h3>
+            <small>Lütfen bu kodları not ediniz. Uygulamayı kullanmadığınız durumlarda bu kurtarma kodlarını kullanabilirsiniz.</small>
+
+            @foreach (var code in recoveryCodes)
+            {
+                <p>@code</p>
+            }
+
+        </div>
+    </div>
 }
 
 <div class="row">

@@ -57,7 +57,7 @@ namespace MemberShipSystem
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=Security}/{action=SignIn}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Member}/{action=Index}/{id?}");
             });
         }
     }

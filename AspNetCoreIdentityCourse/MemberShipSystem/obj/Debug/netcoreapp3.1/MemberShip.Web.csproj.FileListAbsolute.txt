@@ -448,5 +448,6 @@ C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCo
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Admin\ChangePasswordForMember.cshtml.g.cs
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\MemberShip.Web.csprojAssemblyReference.cache
 C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_MemberLayout.cshtml.g.cs
-C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Security\TwoFactorAuth.cshtml.g.cs
-C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Security\TwoFactorWithAuthenticator.cshtml.g.cs
+C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Security\TwoFactorSignIn.cshtml.g.cs
+C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Member\TwoFactorAuth.cshtml.g.cs
+C:\Users\CihatSolak\source\repos\cihatsolak\NetCoreIdentity\AspNetCoreIdentityCourse\MemberShipSystem\obj\Debug\netcoreapp3.1\Razor\Views\Member\TwoFactorWithAuthenticator.cshtml.g.cs

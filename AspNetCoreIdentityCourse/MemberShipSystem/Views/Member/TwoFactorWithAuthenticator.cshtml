@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "TwoFactorWithAuthenticator";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_MemberLayout.cshtml";
 }
 
 <h1>İki Adımlı Kimlik Doğrulama</h1>
@@ -16,16 +16,22 @@
             Shared Key:
             <strong class="text-primary">@Model.SharedKey</strong>
         </strong>
+
+        <hr />
+
+        <div id="qrcode"></div>
+
         <div class="alert alert-info mt-3">
             2. Adım : Telefonunuzdaki kodu aşağıdaki alana giriniz.
         </div>
 
-        <form asp-action="TwoFactorWithAuthenticaor" method="post">
+        <form asp-action="TwoFactorWithAuthenticator" method="post">
+           
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
             @Html.HiddenFor(p => p.AuthenticatorUri)
             @Html.HiddenFor(p => p.SharedKey)
-            
+
             <div class="form-group">
                 <label asp-for="VerificationCode" class="control-label"></label>
                 <input asp-for="VerificationCode" class="form-control" />
@@ -39,3 +45,15 @@
     </div>
 </div>
 
+@section Scripts{
+    <script type="text/javascript">
+        var uri = "@Model.AuthenticatorUri";
+
+        new QRCode(document.getElementById("qrcode"), {
+            text: uri,
+            width: 150,
+            height: 150,
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    </script>
+}
