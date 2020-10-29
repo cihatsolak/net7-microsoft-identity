@@ -18,12 +18,12 @@ namespace MemberShip.Web.Controllers
     [AllowAnonymous]
     public class SecurityController : BaseController
     {
-        private readonly ISendGridService _sendGridService;
+        private readonly ICommunicationService _communicationService;
         private readonly ITwoFactorService _twoFactorService;
-        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ISendGridService sendGridService, ITwoFactorService twoFactorService)
+        public SecurityController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ICommunicationService communicationService, ITwoFactorService twoFactorService)
             : base(userManager, signInManager)
         {
-            _sendGridService = sendGridService;
+            _communicationService = communicationService;
             _twoFactorService = twoFactorService;
         }
 
@@ -116,14 +116,23 @@ namespace MemberShip.Web.Controllers
                 TwoFactorType = (TwoFactor)user.TwoFactor
             };
 
-            if ((TwoFactor)user.TwoFactor == TwoFactor.Email)
+            if ((TwoFactor)user.TwoFactor == TwoFactor.Email || (TwoFactor)user.TwoFactor == TwoFactor.Phone)
             {
                 int secondsRemaining = _twoFactorService.TimeLeft(); //Kodu girmek için kalan saniye.
 
                 if (0 >= secondsRemaining) //Hiç vakit kalmadıysa.
                     return RedirectToAction(nameof(SignIn));
 
-                int sentCode = await _sendGridService.SendVerificationCodeAsync(user.Email, user.UserName); //Email ile doğrulama kodunu gönder.
+                int sentCode = 0;
+
+                if ((TwoFactor)user.TwoFactor == TwoFactor.Email)
+                {
+                    sentCode = await _communicationService.SendEmailVerificationCodeAsync(user.Email, user.UserName); //Email ile doğrulama kodunu gönder.
+                }
+                else
+                {
+                    sentCode = await _communicationService.SendSmsVerificationCodeAsync(user.PhoneNumber, user.UserName); //Sms ile doğrulama kodunu gönder.
+                }
 
                 ViewBag.SecondsRemaining = secondsRemaining; //Saniyeyi view'e taşıyacağım.
             }
@@ -243,7 +252,7 @@ namespace MemberShip.Web.Controllers
 
             }, protocol: HttpContext.Request.Scheme);
 
-            await _sendGridService.SendEmailVerificationAsync(user.Email, user.UserName, verificationLink); //Doğrulama maili gönderiyorum
+            await _communicationService.SendEmailVerificationAsync(user.Email, user.UserName, verificationLink); //Doğrulama maili gönderiyorum
 
             return RedirectToAction(nameof(SignIn));
         }
@@ -276,7 +285,7 @@ namespace MemberShip.Web.Controllers
                 token = passwordResetToken
             }, HttpContext.Request.Protocol); // Şifre sıfırlama linki oluşturuldu.
 
-            await _sendGridService.SendPasswordResetEmailAsync(user.Email, user.UserName, passwordResetLink); //Şifre sıfırlama linki gönder.
+            await _communicationService.SendPasswordResetEmailAsync(user.Email, user.UserName, passwordResetLink); //Şifre sıfırlama linki gönder.
 
             return RedirectToAction(nameof(SignIn));
         }

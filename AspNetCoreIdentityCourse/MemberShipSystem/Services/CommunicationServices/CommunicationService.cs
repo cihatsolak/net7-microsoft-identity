@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace MemberShip.Web.Services.SendGridServices
 {
-    public class SendGridService : ISendGridService
+    public class CommunicationService : ICommunicationService
     {
         private readonly ITwoFactorService _twoFactorService;
         private readonly IOptions<SendGridSettings> _sendGridSettings;
 
-        public SendGridService(ITwoFactorService twoFactorService, IOptions<SendGridSettings> sendGridSettings)
+        public CommunicationService(ITwoFactorService twoFactorService, IOptions<SendGridSettings> sendGridSettings)
         {
             _twoFactorService = twoFactorService;
             _sendGridSettings = sendGridSettings;
@@ -37,7 +37,7 @@ namespace MemberShip.Web.Services.SendGridServices
             await SendAsync(email, subject, fullName, null, htmlContent);
         }
 
-        public async Task<int> SendVerificationCodeAsync(string email, string fullName)
+        public async Task<int> SendEmailVerificationCodeAsync(string email, string fullName)
         {
             int code = _twoFactorService.GetCodeVerification();
 
@@ -64,6 +64,17 @@ namespace MemberShip.Web.Services.SendGridServices
                 return true;
 
             return false;
+        }
+
+        public async Task<int> SendSmsVerificationCodeAsync(string phoneNumber, string fullName)
+        {
+            //Sms api ücretli olduğu için burayı kodlamadık.
+
+            int code = _twoFactorService.GetCodeVerification();
+
+            await SendAsync("", "", "", "", "");
+
+            return - 1;
         }
     }
 }
