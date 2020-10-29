@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "AQ7MRVRFW3SnjfMOaUG7nmzz5IjErIXXL8Bki27HUDXRq9vxtZvnZOEzXZW4mgxz0z5llvhrptwDtimU+WlOAQ==",
+  "dgSpecHash": "n/EPsqzy3WDXEUthtpFheQg0SMMnwK2m1aEvcY+NDob73ycYB8lWzCQM8ZoMgp9R6O76UrouE1vpEN4M5cNnCA==",
   "success": true,
   "projectFilePath": "C:\\Users\\CihatSolak\\source\\repos\\cihatsolak\\NetCoreIdentity\\AspNetCoreIdentityCourse\\MemberShipSystem\\MemberShip.Web.csproj",
   "expectedPackageFiles": [
@@ -90,6 +90,8 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\runtime.win-x86.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "C:\\Users\\CihatSolak\\.nuget\\packages\\sendgrid\\9.21.0\\sendgrid.9.21.0.nupkg.sha512",
+    "C:\\Users\\CihatSolak\\.nuget\\packages\\starkbank-ecdsa\\1.2.0\\starkbank-ecdsa.1.2.0.nupkg.sha512",
     "C:\\Users\\CihatSolak\\.nuget\\packages\\system.appcontext\\4.3.0\\system.appcontext.4.3.0.nupkg.sha512",
     "C:\\Users\\CihatSolak\\.nuget\\packages\\system.buffers\\4.3.0\\system.buffers.4.3.0.nupkg.sha512",
     "C:\\Users\\CihatSolak\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",
