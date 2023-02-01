@@ -2,7 +2,6 @@ using MemberShip.Web;
 using MemberShip.Web.ClaimProviders;
 using MemberShip.Web.Requirements;
 using MemberShip.Web.Services.SendGridServices;
-using MemberShip.Web.Services.SmsServices;
 using MemberShip.Web.Services.TwoFactorServices;
 using MemberShip.Web.Tools.Settings;
 using Microsoft.AspNetCore.Authentication;
@@ -39,7 +38,7 @@ namespace MemberShipSystem
                 options.Cookie.Name = "MainSession";
             });
 
-            services.AddScoped<IClaimsTransformation, ClaimProvider>(); //Claimi özelleþtirdik, claim'lere ek olarak özellikler ekliyorum bu sýnýf ile.
+            services.AddScoped<IClaimsTransformation, ClaimProvider>(); //Claimi ï¿½zelleï¿½tirdik, claim'lere ek olarak ï¿½zellikler ekliyorum bu sï¿½nï¿½f ile.
             services.AddTransient<IAuthorizationHandler, ExpireDateExchangeHandle>();
             services.AddScoped<ITwoFactorService, TwoFactorService>();
             services.AddScoped<ICommunicationService, CommunicationService>();
