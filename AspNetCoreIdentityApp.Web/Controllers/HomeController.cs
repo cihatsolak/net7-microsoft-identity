@@ -2,10 +2,14 @@
 {
     public class HomeController : Controller
     {
+        private readonly UserManager<AppUser> _userManager;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            UserManager<AppUser> userManager,
+            ILogger<HomeController> logger)
         {
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -24,10 +28,29 @@
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        public async Task<IActionResult> SignUp(SignUpInput signUpInput)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var user = new AppUser
+            {
+                UserName = signUpInput.UserName,
+                PhoneNumber = signUpInput.Phone,
+                Email = signUpInput.Email
+            };
+
+            var identityResult = await _userManager.CreateAsync(user, signUpInput.Password);
+            if (identityResult.Succeeded)
+            {
+                TempData["SuccessMessage"] = "Kayıt işlemi başarıyla gerçekleştirildi.";
+                return RedirectToAction(nameof(HomeController.SignUp));
+            }
+
+            foreach (var error in identityResult.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View();
         }
     }
 }
