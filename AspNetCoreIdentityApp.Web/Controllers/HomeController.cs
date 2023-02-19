@@ -31,6 +31,11 @@
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpInput signUpInput)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(signUpInput);
+            }
+
             var user = new AppUser
             {
                 UserName = signUpInput.UserName,
