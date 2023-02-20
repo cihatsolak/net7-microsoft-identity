@@ -19,7 +19,9 @@
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
                 options.Lockout.MaxFailedAccessAttempts = 3;
             })
-            .AddPasswordValidator<CustomPasswordValidator>()
+                .AddPasswordValidator<CustomPasswordValidator>()
+            .AddUserValidator<CustomUserValidator>()
+            
             .AddEntityFrameworkStores<AppDbContext>();
         }
     }
