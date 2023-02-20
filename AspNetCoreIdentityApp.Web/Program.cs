@@ -12,6 +12,21 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //Identity Configuration
 builder.Services.AddIdentityWithExt();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    var cookieBuilder = new CookieBuilder
+    {
+        Name = "IdentityAppCookie"
+    };
+
+    options.Cookie = cookieBuilder;
+
+    options.LoginPath = new PathString("/Home/Signin");
+    options.LogoutPath = new PathString("/Member/logout");
+    options.ExpireTimeSpan = TimeSpan.FromDays(10);
+    options.SlidingExpiration = true; // Kullanıcı her siteye girdiğinde 10 gün daha uzatacaktır. 10 gün hiç giriş yapmazsa tekrar login sayfasına gidecek.
+});
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
