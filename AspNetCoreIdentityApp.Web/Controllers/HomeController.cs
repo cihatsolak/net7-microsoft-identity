@@ -5,12 +5,15 @@
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
 
+        private readonly IEmailService _emailService;
         public HomeController(
             UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager)
+            SignInManager<AppUser> signInManager,
+            IEmailService emailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _emailService = emailService;
         }
 
         public IActionResult Index()
@@ -125,6 +128,8 @@
             string passwordResestToken = await _userManager.GeneratePasswordResetTokenAsync(user); //token'ın ömrü program.cs'de belirlenir.
 
             var passwordResetLink = Url.Action("ResetPassword", "Home", new { userId = user.Id, Token = passwordResestToken }, HttpContext.Request.Scheme);
+
+            await _emailService.SendResetPasswordEmailAsync(passwordResetLink, user.Email);
 
             TempData["SuccessMessage"] = "Şifre yenileme linki, eposta adresinize gönderilmiştir";
 

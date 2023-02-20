@@ -27,6 +27,9 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true; // Kullanıcı her siteye girdiğinde 10 gün daha uzatacaktır. 10 gün hiç giriş yapmazsa tekrar login sayfasına gidecek.
 });
 
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
