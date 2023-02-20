@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreIdentityApp.Web.IOC
+﻿namespace AspNetCoreIdentityApp.Web.Extensions
 {
     public static class StartupExtensions
     {

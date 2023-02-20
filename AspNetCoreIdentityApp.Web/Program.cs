@@ -1,3 +1,5 @@
+using AspNetCoreIdentityApp.Web.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
