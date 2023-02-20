@@ -1,4 +1,5 @@
-﻿global using AspNetCoreIdentityApp.Web.IOC;
+﻿global using AspNetCoreIdentityApp.Web.CustomValidations;
+global using AspNetCoreIdentityApp.Web.IOC;
 global using AspNetCoreIdentityApp.Web.Models;
 global using AspNetCoreIdentityApp.Web.ViewModels;
 global using Microsoft.AspNetCore.Identity;
