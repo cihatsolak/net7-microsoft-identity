@@ -1,5 +1,6 @@
 ﻿namespace AspNetCoreIdentityApp.Web.Controllers
 {
+    [Authorize]
     public class MemberController : Controller
     {
         private readonly SignInManager<AppUser> _signInManager;
@@ -18,6 +19,11 @@
         public async Task Logout() //2.yol: Hangi sayfaya yönleneceğinin bilgisi çıkış yap butonunun (html) returnurl'inde (asp-route-returnurl) 
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public IActionResult Index()
+        {
+            return View();
         }
     }
 }
