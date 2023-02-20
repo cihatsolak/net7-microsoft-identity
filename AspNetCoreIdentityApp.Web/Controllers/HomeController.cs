@@ -101,5 +101,34 @@
 
             return View();
         }
+
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordInput forgetPasswordInput)
+        {
+            var user = await _userManager.FindByEmailAsync(forgetPasswordInput.Email);
+            if (user is null)
+            {
+                ModelState.AddModelError("Bu email adresine sahip kullanıcı bulunamamıştır.");
+                return View();
+            }
+
+            string passwordResestToken = await _userManager.GeneratePasswordResetTokenAsync(user); //token'ın ömrü program.cs'de belirlenir.
+
+            var passwordResetLink = Url.Action("ResetPassword", "Home", new { userId = user.Id, Token = passwordResestToken }, HttpContext.Request.Scheme);
+
+            TempData["SuccessMessage"] = "Şifre yenileme linki, eposta adresinize gönderilmiştir";
+
+            return RedirectToAction(nameof(ForgetPassword));
+        }
     }
 }

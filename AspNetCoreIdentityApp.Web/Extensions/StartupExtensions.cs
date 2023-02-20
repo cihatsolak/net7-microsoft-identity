@@ -4,6 +4,11 @@
     {
         public static void AddIdentityWithExt(this IServiceCollection services)
         {
+            services.Configure<DataProtectionTokenProviderOptions>(opt => //şifre sıfırlama token ömrü
+            {
+                opt.TokenLifespan = TimeSpan.FromHours(2);
+            });
+
             services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
@@ -22,7 +27,8 @@
             .AddPasswordValidator<CustomPasswordValidator>()
             .AddUserValidator<CustomUserValidator>()
             .AddErrorDescriber<LocalizationIdentityErrorDescriber>()
-            .AddEntityFrameworkStores<AppDbContext>();
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
         }
     }
 }
