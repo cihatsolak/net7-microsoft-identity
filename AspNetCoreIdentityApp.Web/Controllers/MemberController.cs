@@ -1,4 +1,6 @@
-﻿namespace AspNetCoreIdentityApp.Web.Controllers
+﻿using Azure.Core;
+
+namespace AspNetCoreIdentityApp.Web.Controllers
 {
     [Authorize]
     public class MemberController : Controller
@@ -37,6 +39,44 @@
             };
 
             return View(userViewModel);
+        }
+
+        public IActionResult PasswordChange()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PasswordChange(PasswordChangeInput passwordChangeInput)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var checkOldPassword = await _userManager.CheckPasswordAsync(user, passwordChangeInput.PasswordOld);
+            if (!checkOldPassword)
+            {
+                ModelState.AddModelError("Eski şifreniz yanlış");
+                return View();
+            }
+
+            var resultChangePassword = await _userManager.ChangePasswordAsync(user, passwordChangeInput.PasswordOld, passwordChangeInput.PasswordNew);
+            if (!resultChangePassword.Succeeded)
+            {
+                ModelState.AddModelErrorList(resultChangePassword.Errors);
+                return View();
+            }
+
+            await _userManager.UpdateSecurityStampAsync(user);
+            await _signInManager.SignOutAsync();
+            await _signInManager.PasswordSignInAsync(user, passwordChangeInput.PasswordNew, true, false);
+
+            TempData["SuccessMessage"] = "Şifreniz başarıyla değiştirilmiştir";
+
+            return View();
         }
     }
 }
