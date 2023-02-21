@@ -1,4 +1,6 @@
-﻿namespace AspNetCoreIdentityApp.Web.Controllers
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace AspNetCoreIdentityApp.Web.Controllers
 {
     public class HomeController : Controller
     {
@@ -72,7 +74,6 @@
             return View();
         }
 
-
         public IActionResult SignUp()
         {
             return View();
@@ -105,11 +106,6 @@
             return View();
         }
 
-        public IActionResult ResetPassword()
-        {
-            return View();
-        }
-
         public IActionResult ForgetPassword()
         {
             return View();
@@ -134,6 +130,45 @@
             TempData["SuccessMessage"] = "Şifre yenileme linki, eposta adresinize gönderilmiştir";
 
             return RedirectToAction(nameof(ForgetPassword));
+        }
+
+        public IActionResult ResetPassword(string userId, string token)
+        {
+            TempData["userId"] = userId;
+            TempData["token"] = token;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(PasswordResetInput passwordResetInput)
+        {
+            var userId = TempData["userId"].ToString();
+            var token = TempData["token"].ToString();
+
+            if (userId == null || token == null)
+            {
+                ModelState.AddModelError("Kullanıcı bulunamamıştır.");
+                return View();
+            }
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                ModelState.AddModelError("Kullanıcı bulunamamıştır.");
+                return View();
+            }
+            
+            var identityResult = await _userManager.ResetPasswordAsync(user, token, passwordResetInput.Password);
+            if (identityResult.Succeeded)
+            {
+                TempData["SuccessMessage"] = "Şifreniz başarıyla yenilenmiştir";
+            }
+            else
+            {
+                ModelState.AddModelErrorList(identityResult.Errors.Select(x => x.Description).ToList());
+            }
+
+            return View();
         }
     }
 }
