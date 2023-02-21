@@ -17,7 +17,7 @@
 
         [DataType(DataType.Date)]
         [Display(Name = "Doğrum tarihi :")]
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         [Display(Name = "Şehir :")]
         public string City { get; set; }
