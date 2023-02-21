@@ -19,7 +19,7 @@ namespace AspNetCoreIdentityApp.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> UserList()
         {
-            var userList = await _userManager.Users.Select(user => new UserViewModel
+            var userList = await _userManager.Users.Select(user => new AdminUserViewModel
             {
                 Id = user.Id,
                 Email = user.Email,

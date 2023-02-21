@@ -9,6 +9,14 @@
                 opt.TokenLifespan = TimeSpan.FromHours(2);
             });
 
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                options.ValidationInterval = TimeSpan.FromMinutes(20);
+                //Cookie'de yer alan securitystamp değeriyle veritabanını karşılaştırır uyuşmazlık durumunda oturumu sonlandırır.
+                //Default olarak 30 dakikadır ama ben burda 20 dakikaya çektim.
+                // _userManager.UpdateSecurityStampAsync(user)
+            });
+
             services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;

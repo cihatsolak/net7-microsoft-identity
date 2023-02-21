@@ -4,10 +4,14 @@
     public class MemberController : Controller
     {
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public MemberController(SignInManager<AppUser> signInManager)
+        public MemberController(
+            SignInManager<AppUser> signInManager, 
+            UserManager<AppUser> userManager)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         //public async Task<IActionResult> Logout() //1.yol
@@ -21,9 +25,18 @@
             await _signInManager.SignOutAsync();
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var userViewModel = new UserViewModel
+            {
+                Email = user.Email,
+                UserName = user.UserName,
+                PhoneNumber = user.PhoneNumber
+            };
+
+            return View(userViewModel);
         }
     }
 }
