@@ -1,12 +1,15 @@
 ﻿namespace AspNetCoreIdentityApp.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "master")]
     public class RolesController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
 
-        public RolesController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+        public RolesController(
+            UserManager<AppUser> userManager,
+            RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -23,11 +26,13 @@
             return View(roles);
         }
 
+        [Authorize(Roles = "master, admin")]
         public IActionResult RoleCreate()
         {
             return View();
         }
 
+        [Authorize(Roles = "master, admin")]
         [HttpPost]
         public async Task<IActionResult> RoleCreate(RoleCreateViewModel request)
         {
@@ -42,7 +47,7 @@
             return RedirectToAction(nameof(RolesController.Index));
         }
 
-
+        [Authorize(Roles = "master, admin")]
         public async Task<IActionResult> RoleUpdate(string id)
         {
             var roleToUpdate = await _roleManager.FindByIdAsync(id);
@@ -54,6 +59,7 @@
             return View(new RoleUpdateViewModel() { Id = roleToUpdate.Id, Name = roleToUpdate!.Name! });
         }
 
+        [Authorize(Roles = "master, admin")]
         [HttpPost]
         public async Task<IActionResult> RoleUpdate(RoleUpdateViewModel request)
         {
@@ -64,7 +70,6 @@
             }
 
             roleToUpdate.Name = request.Name;
-
             await _roleManager.UpdateAsync(roleToUpdate);
 
             ViewData["SuccessMessage"] = "Rol bilgisi güncellenmiştir";
@@ -72,6 +77,7 @@
             return View();
         }
 
+        [Authorize(Roles = "master, admin")]
         public async Task<IActionResult> RoleDelete(string id)
         {
             var roleToDelete = await _roleManager.FindByIdAsync(id);
