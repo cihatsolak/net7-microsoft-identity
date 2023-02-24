@@ -71,5 +71,24 @@
 
             return View();
         }
+
+        public async Task<IActionResult> RoleDelete(string id)
+        {
+            var roleToDelete = await _roleManager.FindByIdAsync(id);
+            if (roleToDelete == null)
+            {
+                throw new Exception("Silinecek rol bulunamamıştır.");
+            }
+
+            var result = await _roleManager.DeleteAsync(roleToDelete);
+            if (!result.Succeeded)
+            {
+                throw new Exception(result.Errors.Select(x => x.Description).First());
+            }
+
+            TempData["SuccessMessage"] = "Rol silinmiştir";
+
+            return RedirectToAction(nameof(RolesController.Index));
+        }
     }
 }
