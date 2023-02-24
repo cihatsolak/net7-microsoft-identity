@@ -42,7 +42,7 @@
             return RedirectToAction(nameof(RolesController.Index));
         }
 
-        
+
         public async Task<IActionResult> RoleUpdate(string id)
         {
             var roleToUpdate = await _roleManager.FindByIdAsync(id);
@@ -89,6 +89,51 @@
             TempData["SuccessMessage"] = "Rol silinmiştir";
 
             return RedirectToAction(nameof(RolesController.Index));
+        }
+
+        public async Task<IActionResult> AssignRoleToUser(string id)
+        {
+            ViewBag.userId = id;
+
+            var currentUser = await _userManager.FindByIdAsync(id);
+            var roles = await _roleManager.Roles.ToListAsync();
+            var userRoles = await _userManager.GetRolesAsync(currentUser);
+
+            var roleViewModelList = new List<AssignRoleToUserViewModel>();
+
+            foreach (var role in roles)
+            {
+                AssignRoleToUserViewModel assignRoleToUserViewModel = new() { Id = role.Id, Name = role.Name! };
+
+                if (userRoles.Contains(role.Name))
+                {
+                    assignRoleToUserViewModel.Exist = true;
+                }
+
+                roleViewModelList.Add(assignRoleToUserViewModel);
+            }
+
+            return View(roleViewModelList);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignRoleToUser(string userId, List<AssignRoleToUserViewModel> requestList)
+        {
+            var userToAssignRoles = await _userManager.FindByIdAsync(userId);
+
+            foreach (var role in requestList)
+            {
+                if (role.Exist)
+                {
+                    await _userManager.AddToRoleAsync(userToAssignRoles, role.Name);
+                }
+                else
+                {
+                    await _userManager.RemoveFromRoleAsync(userToAssignRoles, role.Name);
+                }
+            }
+
+            return RedirectToAction(nameof(HomeController.UserList), "Home");
         }
     }
 }

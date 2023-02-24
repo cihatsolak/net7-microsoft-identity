@@ -1,4 +1,5 @@
-﻿global using AspNetCoreIdentityApp.Web.CustomValidations;
+﻿global using AspNetCoreIdentityApp.Web.Areas.Admin.Models;
+global using AspNetCoreIdentityApp.Web.CustomValidations;
 global using AspNetCoreIdentityApp.Web.Extensions;
 global using AspNetCoreIdentityApp.Web.Localizations;
 global using AspNetCoreIdentityApp.Web.Models;
@@ -19,4 +20,4 @@ global using System.ComponentModel.DataAnnotations;
 global using System.Net;
 global using System.Net.Mail;
 global using System.Security.Claims;
-global using AspNetCoreIdentityApp.Web.Areas.Admin.Models;
+global using System.Text;
