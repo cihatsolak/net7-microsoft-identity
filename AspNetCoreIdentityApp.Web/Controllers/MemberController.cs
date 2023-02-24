@@ -36,7 +36,8 @@
             {
                 Email = user.Email,
                 UserName = user.UserName,
-                PhoneNumber = user.PhoneNumber
+                PhoneNumber = user.PhoneNumber,
+                PictureUrl = user.Picture
             };
 
             return View(userViewModel);

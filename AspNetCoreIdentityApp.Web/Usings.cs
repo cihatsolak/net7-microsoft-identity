@@ -11,6 +11,7 @@ global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Mvc.ModelBinding;
 global using Microsoft.AspNetCore.Mvc.Rendering;
+global using Microsoft.AspNetCore.Razor.TagHelpers;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.FileProviders;
 global using Microsoft.Extensions.Options;
