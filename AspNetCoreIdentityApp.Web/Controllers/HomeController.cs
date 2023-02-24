@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace AspNetCoreIdentityApp.Web.Controllers
+﻿namespace AspNetCoreIdentityApp.Web.Controllers
 {
     public class HomeController : Controller
     {

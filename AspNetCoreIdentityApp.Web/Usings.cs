@@ -19,3 +19,4 @@ global using System.ComponentModel.DataAnnotations;
 global using System.Net;
 global using System.Net.Mail;
 global using System.Security.Claims;
+global using AspNetCoreIdentityApp.Web.Areas.Admin.Models;
