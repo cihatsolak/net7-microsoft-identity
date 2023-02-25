@@ -6,6 +6,7 @@ global using AspNetCoreIdentityApp.Web.Models;
 global using AspNetCoreIdentityApp.Web.Services;
 global using AspNetCoreIdentityApp.Web.Settings;
 global using AspNetCoreIdentityApp.Web.ViewModels;
+global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

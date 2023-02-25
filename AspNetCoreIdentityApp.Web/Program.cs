@@ -1,3 +1,5 @@
+using AspNetCoreIdentityApp.Web.ClaimProviders;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
@@ -9,6 +11,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //Identity Configuration
 builder.Services.AddIdentityWithExt();
+
+builder.Services.AddScoped<IClaimsTransformation, UserClaimProvider>();
+
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
