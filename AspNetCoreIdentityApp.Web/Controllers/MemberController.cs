@@ -138,7 +138,7 @@
             await _userManager.UpdateSecurityStampAsync(user);
             await _signInManager.SignOutAsync();
 
-            if (request.BirthDate.HasValue)
+            if (request.BirthDate.HasValue) //kullanıcın doğum tarihi varsa, cookie'ye claim olarak ekliyoruz.
             {
                 await _signInManager.SignInWithClaimsAsync(user, true, new[] { new Claim("birthdate", user.BirthDate.ToString()) });
             }

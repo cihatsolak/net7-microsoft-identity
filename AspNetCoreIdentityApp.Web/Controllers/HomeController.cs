@@ -1,4 +1,6 @@
-﻿namespace AspNetCoreIdentityApp.Web.Controllers
+﻿using System.Collections.Generic;
+
+namespace AspNetCoreIdentityApp.Web.Controllers
 {
     public class HomeController : Controller
     {
@@ -56,20 +58,24 @@
                 return View();
             }
 
-            if (signInResult.Succeeded)
+            if (!signInResult.Succeeded)
             {
-                return Redirect(returnUrl);
+                int failedCount = await _userManager.GetAccessFailedCountAsync(user);
+
+                ModelState.AddModelErrorList(new List<string>()
+                {
+                    "Email veya şifre yanlış",
+                    $"Başarısız giriş sayısı : {failedCount}"
+                });
             }
 
-            int failedCount = await _userManager.GetAccessFailedCountAsync(user);
-
-            ModelState.AddModelErrorList(new List<string>()
+            if (user.BirthDate.HasValue)
             {
-                "Email veya şifre yanlış",
-                $"Başarısız giriş sayısı : {failedCount}"
-            });
+                var claimsExtra = new[] { new Claim("birthdate", user.BirthDate.Value.ToString()) };
+                await _signInManager.SignInWithClaimsAsync(user, signInInput.RememberMe, claimsExtra);
+            }
 
-            return View();
+            return Redirect(returnUrl);
         }
 
         public IActionResult SignUp()

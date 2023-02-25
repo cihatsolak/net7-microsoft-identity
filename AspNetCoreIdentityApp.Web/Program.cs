@@ -1,6 +1,3 @@
-using AspNetCoreIdentityApp.Web.ClaimProviders;
-using AspNetCoreIdentityApp.Web.Requirements;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
@@ -14,6 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddIdentityWithExt();
 
 builder.Services.AddScoped<IAuthorizationHandler, ExchangeExpireRequirementHandler>();
+builder.Services.AddScoped<IAuthorizationHandler, ViolenceRequirementHandler>();
 
 builder.Services.AddScoped<IClaimsTransformation, UserClaimProvider>();
 
@@ -29,6 +27,11 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("ExchangeRestriction", policy =>
     {
         policy.AddRequirements(new ExchangeExpireRequirement());
+    });
+
+    options.AddPolicy("ViolenceRestriction", policy =>
+    {
+        policy.AddRequirements(new ViolenceRequirement(18));
     });
 });
 

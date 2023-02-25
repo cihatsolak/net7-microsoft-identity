@@ -1,7 +1,8 @@
 ﻿namespace AspNetCoreIdentityApp.Web.ClaimProviders
 {
     /// <summary>
-    /// Sadece Authorize attribute'una sahip olan yerlerde çalışır
+    /// Sadece Authorize attribute'una sahip olan yerlerde çalışır,
+    /// Framework tarafından authorize attribute'üne sahip olunan alanlarda devreye girerek çalışır.
     /// </summary>
     public class UserClaimProvider : IClaimsTransformation
     {

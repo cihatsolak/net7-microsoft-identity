@@ -13,5 +13,11 @@
         {
             return View();
         }
+
+        [Authorize(Policy = "ViolenceRestriction")]
+        public IActionResult ViolenceRestriction()
+        {
+            return View();
+        }
     }
 }
