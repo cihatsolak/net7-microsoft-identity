@@ -7,5 +7,11 @@
         {
             return View();
         }
+
+        [Authorize(Policy = "ExchangeRestriction")]
+        public IActionResult ExchangeRestriction()
+        {
+            return View();
+        }
     }
 }

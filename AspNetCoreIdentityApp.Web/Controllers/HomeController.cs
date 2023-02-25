@@ -93,15 +93,24 @@
             };
 
             var identityResult = await _userManager.CreateAsync(user, signUpInput.Password);
-            if (identityResult.Succeeded)
+            if (!identityResult.Succeeded)
             {
-                TempData["SuccessMessage"] = "Kayıt işlemi başarıyla gerçekleştirildi.";
+                ModelState.AddModelErrorList(identityResult.Errors);
                 return RedirectToAction(nameof(HomeController.SignUp));
             }
 
-            ModelState.AddModelErrorList(identityResult.Errors);
+            Claim exchangeExpireClaim = new("ExchangeExpireDate", DateTime.Now.AddDays(20).ToString());
 
-            return View();
+            var claimResult = await _userManager.AddClaimAsync(user, exchangeExpireClaim);
+            if (!claimResult.Succeeded)
+            {
+                ModelState.AddModelErrorList(claimResult.Errors);
+                return View();
+            }
+
+            TempData["SuccessMessage"] = "Kayıt işlemi başarıyla gerçekleştirildi.";
+
+            return RedirectToAction(nameof(HomeController.SignIn));
         }
 
         public IActionResult ForgetPassword()
@@ -155,7 +164,7 @@
                 ModelState.AddModelError("Kullanıcı bulunamamıştır.");
                 return View();
             }
-            
+
             var identityResult = await _userManager.ResetPasswordAsync(user, token, passwordResetInput.Password);
             if (identityResult.Succeeded)
             {

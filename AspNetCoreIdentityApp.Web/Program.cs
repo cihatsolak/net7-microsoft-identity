@@ -1,4 +1,5 @@
 using AspNetCoreIdentityApp.Web.ClaimProviders;
+using AspNetCoreIdentityApp.Web.Requirements;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 //Identity Configuration
 builder.Services.AddIdentityWithExt();
 
+builder.Services.AddScoped<IAuthorizationHandler, ExchangeExpireRequirementHandler>();
+
 builder.Services.AddScoped<IClaimsTransformation, UserClaimProvider>();
 
 builder.Services.AddAuthorization(options =>
@@ -21,6 +24,11 @@ builder.Services.AddAuthorization(options =>
         //city claim'inde istanbul, izmir, manisa olanlar erişebilir
         policy.RequireClaim("city", "İstanbul", "İzmir", "Manisa");
         policy.RequireRole("master", "admin"); //master ve admin rolleri erişebilir.
+    });
+
+    options.AddPolicy("ExchangeRestriction", policy =>
+    {
+        policy.AddRequirements(new ExchangeExpireRequirement());
     });
 });
 
