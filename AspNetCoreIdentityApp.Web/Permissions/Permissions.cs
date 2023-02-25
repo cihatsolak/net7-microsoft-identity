@@ -8,7 +8,7 @@
             public const string Create = "Permissions.Stock.Create";
             public const string Update = "Permissions.Stock.Update";
             public const string Delete = "Permissions.Stock.Delete";
-        }
+        } 
 
         public static class Order
         {
