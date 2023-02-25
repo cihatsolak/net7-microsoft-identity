@@ -14,6 +14,16 @@ builder.Services.AddIdentityWithExt();
 
 builder.Services.AddScoped<IClaimsTransformation, UserClaimProvider>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CityRestriction", policy =>
+    {
+        //city claim'inde istanbul, izmir, manisa olanlar erişebilir
+        policy.RequireClaim("city", "İstanbul", "İzmir", "Manisa");
+        policy.RequireRole("master", "admin"); //master ve admin rolleri erişebilir.
+    });
+});
+
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
