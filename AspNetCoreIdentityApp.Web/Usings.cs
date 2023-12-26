@@ -6,6 +6,7 @@ global using AspNetCoreIdentityApp.Web.Localizations;
 global using AspNetCoreIdentityApp.Web.Models;
 global using AspNetCoreIdentityApp.Web.PermissionRoot;
 global using AspNetCoreIdentityApp.Web.Requirements;
+global using AspNetCoreIdentityApp.Web.Seeds;
 global using AspNetCoreIdentityApp.Web.Services;
 global using AspNetCoreIdentityApp.Web.Settings;
 global using AspNetCoreIdentityApp.Web.ViewModels;

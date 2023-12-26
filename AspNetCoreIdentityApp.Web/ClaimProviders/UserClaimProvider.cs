@@ -17,16 +17,16 @@
         {
             var claimsIdentity = principal.Identity as ClaimsIdentity;
 
-            var currentUser = await _userManager.FindByNameAsync(claimsIdentity.Name);
+            var user = await _userManager.FindByNameAsync(claimsIdentity.Name);
 
-            if (string.IsNullOrEmpty(currentUser.City))
+            if (string.IsNullOrEmpty(user.City))
             {
                 return principal;
             }
 
-            if (principal.HasClaim(x => x.Type != "city"))
+            if (principal.HasClaim(claim => claim.Type != "city"))
             {
-                Claim cityClaim = new("city", currentUser.City);
+                Claim cityClaim = new("city", user.City);
                 claimsIdentity.AddClaim(cityClaim);
             }
 
